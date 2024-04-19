@@ -1,11 +1,11 @@
-import { Welcome } from '../components/Welcome/Welcome';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
+import { AppLayout } from '@/pages/App.layout';
 
 export function HomePage() {
   return (
-    <>
-      <Welcome />
+    <AppLayout>
+      123
       <ColorSchemeToggle />
-    </>
+    </AppLayout>
   );
 }
