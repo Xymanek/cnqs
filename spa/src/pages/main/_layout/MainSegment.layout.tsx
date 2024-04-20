@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
+import { AppShell, Burger, Container, Group, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MainSegmentDesktopMenu, MainSegmentMobileMenu } from '@/pages/main/_layout/MainSegment.menu';
 import React from 'react';
@@ -28,9 +28,9 @@ export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        Navbar is only visible on mobile, links that are rendered in the header on desktop are
-        hidden on mobile in header and rendered in navbar instead.
-        {children}
+        <Container>
+          {children}
+        </Container>
       </AppShell.Main>
     </AppShell>
   );
