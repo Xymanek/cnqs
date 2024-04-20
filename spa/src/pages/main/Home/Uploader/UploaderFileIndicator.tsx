@@ -5,12 +5,12 @@ import {
   Progress,
   Stack,
   TextInput,
-  UnstyledButton,
   rem,
   Space,
   Flex,
   ActionIcon,
   Text,
+  Button,
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
@@ -74,36 +74,36 @@ function UploaderFileName() {
   }
 
   return (
-    <TextInput
-      style={{ flexGrow: 1 }}
-      value={fileNameEdit}
-      onChange={(e) => setFileNameEdit(e.target.value)}
-      rightSection={
-        <>
-          <UnstyledButton>
-            <IconX
-              color="red"
-              style={{
-                width: rem(16),
-                height: rem(16),
-              }}
-              onClick={cancelEdit}
-            />
-          </UnstyledButton>
-          <Space w={rem(2)} />
-          <UnstyledButton>
-            <IconCheck
-              color="green"
-              style={{
-                width: rem(16),
-                height: rem(16),
-              }}
-              onClick={confirmEdit}
-            />
-          </UnstyledButton>
-        </>
-      }
-      rightSectionWidth={rem(42)}
-    />
+    <Flex>
+      <TextInput
+        style={{ flexGrow: 1 }}
+        value={fileNameEdit}
+        onChange={(e) => setFileNameEdit(e.target.value)}
+      />
+
+      <Space w="sm" />
+
+      <Button.Group>
+        {/* TODO: less horizontal padding for both */}
+        <Button variant="default" onClick={cancelEdit}>
+          <IconX
+            color="red"
+            style={{
+              width: rem(16),
+              height: rem(16),
+            }}
+          />
+        </Button>
+        <Button variant="default" onClick={confirmEdit}>
+          <IconCheck
+            color="green"
+            style={{
+              width: rem(16),
+              height: rem(16),
+            }}
+          />
+        </Button>
+      </Button.Group>
+    </Flex>
   );
 }
