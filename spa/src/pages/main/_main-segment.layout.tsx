@@ -2,9 +2,9 @@ import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
 
-import classes from './MobileNavbar.module.css';
+import classes from '../MobileNavbar.module.css';
 
-export function AppLayout({ children }: { children: React.ReactNode }) {
+export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
 
   return (
