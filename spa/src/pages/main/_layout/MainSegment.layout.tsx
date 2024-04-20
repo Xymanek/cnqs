@@ -1,8 +1,7 @@
 import { AppShell, Burger, Group, UnstyledButton } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { MainSegmentDesktopMenu, MainSegmentMobileMenu } from '@/pages/main/_layout/MainSegment.menu';
 import React from 'react';
-
-import classes from '../MobileNavbar.module.css';
 
 export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
@@ -19,21 +18,13 @@ export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
           <Group justify="space-between" style={{ flex: 1 }}>
             {/*<MantineLogo size={30} />*/}
             <div>CNQS</div>
-            <Group ml="xl" gap={0} visibleFrom="sm">
-              <UnstyledButton className={classes.control}>Home</UnstyledButton>
-              <UnstyledButton className={classes.control}>Blog</UnstyledButton>
-              <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
-              <UnstyledButton className={classes.control}>Support</UnstyledButton>
-            </Group>
+            <MainSegmentDesktopMenu />
           </Group>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar py="md" px={4}>
-        <UnstyledButton className={classes.control}>Home</UnstyledButton>
-        <UnstyledButton className={classes.control}>Blog</UnstyledButton>
-        <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
-        <UnstyledButton className={classes.control}>Support</UnstyledButton>
+        <MainSegmentMobileMenu />
       </AppShell.Navbar>
 
       <AppShell.Main>
