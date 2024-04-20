@@ -1,5 +1,11 @@
+import { UploaderFileIndicator } from '@/pages/main/Home/Uploader/UploaderFileIndicator';
+
 export function UploaderFileList() {
   return (
-    <div>Files go here</div>
+    <>
+      <UploaderFileIndicator/>
+      <UploaderFileIndicator/>
+      <UploaderFileIndicator/>
+    </>
   );
 }
