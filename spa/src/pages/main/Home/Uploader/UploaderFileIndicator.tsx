@@ -37,7 +37,7 @@ export function UploaderFileIndicator() {
   );
 }
 
-function UploaderFileName() {
+export function UploaderFileName() {
   const [fileName, setFileName] = useState('File.jpg');
   const [fileNameEdit, setFileNameEdit] = useState(fileName);
   const [isEditingFileName, setIsEditingFileName] = useState(false);
