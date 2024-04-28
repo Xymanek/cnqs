@@ -10,7 +10,6 @@ jobs:
   # This doesn't need to run in a matrix
   code-style:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
