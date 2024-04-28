@@ -26,11 +26,12 @@ jobs:
 
       - run: yarn lint
         working-directory: ./spa
-        continue-on-error: true
+        if: always()
 
       - run: yarn prettier
         working-directory: ./spa
         continue-on-error: true
+        if: always()
 
   test:
     runs-on: ubuntu-latest
