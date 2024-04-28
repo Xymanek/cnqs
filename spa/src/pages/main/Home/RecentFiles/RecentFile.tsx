@@ -12,7 +12,7 @@ export function RecentFile() {
           />
         </Grid.Col>
 
-        <Grid.Col span={10}>
+        <Grid.Col2 span={10}>
           <Stack>
             <Text>File.jpg</Text>
             <Button.Group>
@@ -21,7 +21,7 @@ export function RecentFile() {
               <Button color="red">Delete</Button>
             </Button.Group>
           </Stack>
-        </Grid.Col>
+        </Grid.Col2>
       </Grid>
     </Paper>
   );
