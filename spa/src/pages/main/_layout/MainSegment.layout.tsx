@@ -1,7 +1,7 @@
-import { AppShell, Burger, Container, Group, UnstyledButton } from '@mantine/core';
+import { AppShell, Burger, Container, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { MainSegmentDesktopMenu, MainSegmentMobileMenu } from '@/pages/main/_layout/MainSegment.menu';
 import React from 'react';
+import { MainSegmentDesktopMenu, MainSegmentMobileMenu } from '@/pages/main/_layout/MainSegment.menu';
 
 export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
