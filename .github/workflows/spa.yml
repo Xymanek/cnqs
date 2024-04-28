@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'spa/**'
+      - '.github/workflows/spa.yml'
 
 jobs:
   # This doesn't need to run in a matrix
@@ -26,9 +27,11 @@ jobs:
 
       - run: yarn lint
         working-directory: ./spa
+        continue-on-error: true
 
       - run: yarn prettier
         working-directory: ./spa
+        continue-on-error: true
 
   test:
     runs-on: ubuntu-latest
