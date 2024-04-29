@@ -37,6 +37,7 @@ jobs:
         if: always()
         with:
           workdir: ./spa
+          reporter: github-check
 
   test:
     runs-on: ubuntu-latest
