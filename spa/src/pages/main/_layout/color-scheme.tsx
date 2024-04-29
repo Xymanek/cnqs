@@ -30,7 +30,6 @@ const colorSchemeOptions = [
 // Based on https://github.com/mantinedev/mantine/blob/afc992942bdaf4e807e83b9fcb6df340c5e22f4a/packages/%40mantinex/mantine-header/src/ColorSchemeControl.tsx
 export function ColorSchemeSwitcherDesktop() {
   const { setColorScheme, colorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
 
   return (
     <Popover width={200} position="bottom" withArrow shadow="md">

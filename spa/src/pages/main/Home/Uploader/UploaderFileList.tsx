@@ -4,8 +4,8 @@ export function UploaderFileList() {
   return (
     <>
       <UploaderFileIndicator />
-      <UploaderFileIndicator/>
-      <UploaderFileIndicator/>
+      <UploaderFileIndicator />
+      <UploaderFileIndicator />
     </>
   );
 }

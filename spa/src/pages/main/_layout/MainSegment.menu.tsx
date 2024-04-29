@@ -1,6 +1,6 @@
 import { Group, Space, UnstyledButton } from '@mantine/core';
-import classes from './MobileNavbar.module.css';
 import React from 'react';
+import classes from './MobileNavbar.module.css';
 import { ColorSchemeSwitcherDesktop, ColorSchemeSwitcherMobile } from '@/pages/main/_layout/color-scheme';
 
 export function MainSegmentDesktopMenu() {
@@ -24,7 +24,7 @@ export function MainSegmentMobileMenu() {
       <UnstyledButton className={classes.control}>Contacts</UnstyledButton>
       <UnstyledButton className={classes.control}>Support</UnstyledButton>
 
-      <Space/>
+      <Space />
 
       <ColorSchemeSwitcherMobile />
     </>
