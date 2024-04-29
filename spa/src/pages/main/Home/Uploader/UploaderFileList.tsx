@@ -3,7 +3,7 @@ import { UploaderFileIndicator } from '@/pages/main/Home/Uploader/UploaderFileIn
 export function UploaderFileList() {
   return (
     <>
-      <UploaderFileIndicator/>
+      <UploaderFileIndicator />
       <UploaderFileIndicator/>
       <UploaderFileIndicator/>
     </>
