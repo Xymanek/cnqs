@@ -4,7 +4,6 @@ import {
   SegmentedControl,
   Tooltip,
   UnstyledButton,
-  useComputedColorScheme,
   useMantineColorScheme,
 } from '@mantine/core';
 import { IconMoon, IconSun } from '@tabler/icons-react';
