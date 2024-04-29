@@ -1,4 +1,4 @@
-import { render, screen, act, userEvent } from '@test-utils';
+import { render, screen, userEvent } from '@test-utils';
 import { expect } from 'vitest';
 import { UploaderFileName } from '@/pages/main/Home/Uploader/UploaderFileIndicator';
 
