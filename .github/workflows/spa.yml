@@ -24,14 +24,19 @@ jobs:
       - run: yarn install --immutable --immutable-cache --check-cache
         working-directory: ./spa
 
-      - run: yarn lint
+      - run: yarn lint:eslint
         working-directory: ./spa
         if: always()
 
-      - run: yarn prettier
+      - run: yarn lint:stylelint
         working-directory: ./spa
-        continue-on-error: true
         if: always()
+
+      - name: Prettier
+        uses: EPMatt/reviewdog-action-prettier@v1.2.0
+        if: always()
+        with:
+          workdir: ./spa
 
   test:
     runs-on: ubuntu-latest
