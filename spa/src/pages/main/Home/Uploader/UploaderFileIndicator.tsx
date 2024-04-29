@@ -14,6 +14,7 @@ import {
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
+import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
 
 export function UploaderFileIndicator() {
   return (
@@ -85,24 +86,29 @@ export function UploaderFileName() {
 
       <Button.Group>
         {/* TODO: less horizontal padding for both */}
-        <Button variant="default" onClick={cancelEdit}>
-          <IconX
-            color="red"
-            style={{
-              width: rem(16),
-              height: rem(16),
-            }}
-          />
-        </Button>
-        <Button variant="default" onClick={confirmEdit}>
-          <IconCheck
-            color="green"
-            style={{
-              width: rem(16),
-              height: rem(16),
-            }}
-          />
-        </Button>
+        <AccessibleTooltip label="Cancel name edit">
+          <Button variant="default" onClick={cancelEdit}>
+            <IconX
+              color="red"
+              style={{
+                width: rem(16),
+                height: rem(16),
+              }}
+            />
+          </Button>
+        </AccessibleTooltip>
+
+        <AccessibleTooltip label="Apply new name">
+          <Button variant="default" onClick={confirmEdit}>
+            <IconCheck
+              color="green"
+              style={{
+                width: rem(16),
+                height: rem(16),
+              }}
+            />
+          </Button>
+        </AccessibleTooltip>
       </Button.Group>
     </Flex>
   );

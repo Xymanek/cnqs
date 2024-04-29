@@ -16,5 +16,34 @@ describe('UploaderFileName component', () => {
 
     expect(screen.queryAllByRole('textbox')).toHaveLength(1);
   });
-});
 
+  it('cancelling input keeps old value', async () => {
+    render(<UploaderFileName />);
+
+    await userEvent.click(screen.getByRole('button'));
+
+    await userEvent.clear(screen.getByRole('textbox'));
+    await userEvent.type(screen.getByRole('textbox'), 'abc');
+
+    await userEvent.click(screen.getByLabelText('Cancel name edit'));
+
+    expect(screen.queryAllByRole('textbox')).toHaveLength(0);
+    expect(screen.queryAllByText('File.jpg')).toHaveLength(1);
+    expect(screen.queryAllByText('abc.jpg')).toHaveLength(0);
+  });
+
+  it('confirming input keeps new value', async () => {
+    render(<UploaderFileName />);
+
+    await userEvent.click(screen.getByRole('button'));
+
+    await userEvent.clear(screen.getByRole('textbox'));
+    await userEvent.type(screen.getByRole('textbox'), 'abc.jpg');
+
+    await userEvent.click(screen.getByLabelText('Apply new name'));
+
+    expect(screen.queryAllByRole('textbox')).toHaveLength(0);
+    expect(screen.queryAllByText('File.jpg')).toHaveLength(0);
+    expect(screen.queryAllByText('abc.jpg')).toHaveLength(1);
+  });
+});
