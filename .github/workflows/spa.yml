@@ -35,6 +35,8 @@ jobs:
       - name: Prettier
         uses: EPMatt/reviewdog-action-prettier@v1.2.0
         if: always()
+        # We want just warnings, not errors
+        continue-on-error: true
         with:
           workdir: ./spa
           reporter: github-check
