@@ -1,7 +1,7 @@
 import { AppShell, Burger, Container, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import React from 'react';
-import { MainSegmentDesktopMenu, MainSegmentMobileMenu } from '@/pages/main/_layout/MainSegment.menu';
+import { MainSegmentDesktopMenu, MainSegmentMobileMenu } from './MainSegment.menu';
 
 export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
@@ -28,9 +28,7 @@ export function MainSegmentLayout({ children }: { children: React.ReactNode }) {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container>
-          {children}
-        </Container>
+        <Container>{children}</Container>
       </AppShell.Main>
     </AppShell>
   );

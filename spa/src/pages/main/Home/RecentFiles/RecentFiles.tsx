@@ -1,6 +1,6 @@
 import { Stack, Title } from '@mantine/core';
-import { NoRecentFiles } from '@/pages/main/Home/RecentFiles/NoRecentFiles';
-import { RecentFile } from '@/pages/main/Home/RecentFiles/RecentFile';
+import { NoRecentFiles } from './NoRecentFiles';
+import { RecentFile } from './RecentFile';
 
 export function RecentFiles() {
   return (

@@ -1,7 +1,7 @@
 import { Group, Space, UnstyledButton } from '@mantine/core';
 import React from 'react';
 import classes from './MobileNavbar.module.css';
-import { ColorSchemeSwitcherDesktop, ColorSchemeSwitcherMobile } from '@/pages/main/_layout/color-scheme';
+import { ColorSchemeSwitcherDesktop, ColorSchemeSwitcherMobile } from './color-scheme';
 
 export function MainSegmentDesktopMenu() {
   return (
@@ -30,4 +30,3 @@ export function MainSegmentMobileMenu() {
     </>
   );
 }
-

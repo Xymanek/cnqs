@@ -1,6 +1,6 @@
 import { Divider } from '@mantine/core';
 import { Uploader } from './Uploader/Uploader';
-import { RecentFiles } from '@/pages/main/Home/RecentFiles/RecentFiles';
+import { RecentFiles } from './RecentFiles/RecentFiles';
 
 export function HomePage() {
   return (

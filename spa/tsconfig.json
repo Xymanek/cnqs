@@ -17,7 +17,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
       "@test-utils": ["./test-utils"]
     }
   },

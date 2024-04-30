@@ -1,4 +1,4 @@
-import { UploaderFileIndicator } from '@/pages/main/Home/Uploader/UploaderFileIndicator';
+import { UploaderFileIndicator } from './UploaderFileIndicator';
 
 export function UploaderFileList() {
   return (

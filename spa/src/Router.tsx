@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { WelcomePage } from '@/pages/Welcome.page';
-import mainRoutes from '@/pages/main/_main-segment.routes';
+import { WelcomePage } from './pages/Welcome.page';
+import mainRoutes from './pages/main/_main-segment.routes';
 
 const router = createBrowserRouter([
-    ...mainRoutes,
+  ...mainRoutes,
   {
     path: '/welcome',
     element: <WelcomePage />,
