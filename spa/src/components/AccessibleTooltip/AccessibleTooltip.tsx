@@ -1,6 +1,9 @@
 import { isElement, Tooltip, TooltipProps } from '@mantine/core';
 import { cloneElement } from 'react';
 
+/**
+ * Automatically adds `aria-label` prop with the `props.label` value to the child element.
+ */
 export function AccessibleTooltip(props: TooltipProps) {
   if (!isElement(props.children)) {
     throw new Error(
