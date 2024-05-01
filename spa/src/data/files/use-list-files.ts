@@ -1,14 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import type { UseQueryOptions } from '@tanstack/react-query/src/types';
 import { Client } from '../backend-api';
 
-export function useListFiles(params?: Partial<UseQueryOptions>) {
+export function useListFiles() {
   return useQuery({
     queryKey: ['uploaded-files'],
-    queryFn: async (ctx) => {
+    queryFn: (ctx) => {
       const client = new Client('http://localhost:5041'); // TODO: temp
       return client.listFilesEndpoint(ctx.signal);
     },
-    ...(params || {}),
   });
 }

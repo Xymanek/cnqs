@@ -8,7 +8,7 @@ export interface RecentFileProps {
 
 export function RecentFile({ fileName, viewUrl }: RecentFileProps) {
   const viewButton = viewUrl ? (
-    <Button color="green" component="a" href={viewUrl} target='_blank'>
+    <Button color="green" component="a" href={viewUrl} target="_blank">
       View & edit
     </Button>
   ) : (

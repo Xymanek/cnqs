@@ -12,21 +12,18 @@ export function RecentFiles() {
         <Title>Recent files</Title>
         {isFetching ? <Loader /> : null}
       </Group>
-      <RecentFilesInner />
+      <RecentFilesContent />
     </Stack>
   );
 }
 
-function RecentFilesInner() {
-  const { isPending, error, data } = useListFiles();
+function RecentFilesContent() {
+  const { isSuccess, error, data } = useListFiles();
 
-  if (isPending) return 'Loading...';
   if (error) return `An error has occurred: ${error.message}`;
+  if (!isSuccess) return '';
 
-  // TODO
-  if (!data) return 'World is ending';
-
-  if (data.files?.length < 1) {
+  if (data.files.length < 1) {
     return <NoRecentFiles />;
   }
 
