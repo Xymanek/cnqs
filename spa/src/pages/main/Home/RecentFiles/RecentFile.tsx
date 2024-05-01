@@ -1,7 +1,20 @@
 import { Button, Grid, Image, Paper, Stack, Text } from '@mantine/core';
 import React from 'react';
 
-export function RecentFile() {
+export interface RecentFileProps {
+  fileName?: string;
+  viewUrl?: string;
+}
+
+export function RecentFile({ fileName, viewUrl }: RecentFileProps) {
+  const viewButton = viewUrl ? (
+    <Button color="green" component="a" href={viewUrl} target='_blank'>
+      View & edit
+    </Button>
+  ) : (
+    <Button color="green">View & edit</Button>
+  );
+
   return (
     <Paper shadow="xs" withBorder p="xl">
       <Grid>
@@ -14,9 +27,9 @@ export function RecentFile() {
 
         <Grid.Col span={10}>
           <Stack>
-            <Text>File.jpg</Text>
+            <Text>{fileName ?? 'File.jpg'}</Text>
             <Button.Group>
-              <Button color="green">View & edit</Button>
+              {viewButton}
               <Button>Share</Button>
               <Button color="red">Delete</Button>
             </Button.Group>

@@ -18,6 +18,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@/components/*": ["./src/components/*"],
+      "@/data/*": ["./src/data/*"],
       "@test-utils": ["./test-utils"]
     }
   },

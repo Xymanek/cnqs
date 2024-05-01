@@ -1,5 +1,8 @@
 module.exports = {
-  extends: ['mantine'],
+  extends: [
+    'mantine',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
+  ],
   parserOptions: {
     project: './tsconfig.json',
   },

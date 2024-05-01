@@ -18,10 +18,24 @@ builder.Services
 
 builder.Services.AutoRegister();
 
+// TODO
+builder.Services.AddCors(cors => cors.AddDefaultPolicy(corsPolicy =>
+{
+    corsPolicy.AllowAnyHeader();
+    corsPolicy.AllowAnyMethod();
+    corsPolicy.AllowAnyOrigin();
+}));
+
 WebApplication app = builder.Build();
 
+// TODO: temp
+app.UseCors();
+
 app
-    .UseFastEndpoints()
+    .UseFastEndpoints(c =>
+    {
+        c.Endpoints.ShortNames = true;
+    })
     .UseSwaggerGen();
 
 app.Run();

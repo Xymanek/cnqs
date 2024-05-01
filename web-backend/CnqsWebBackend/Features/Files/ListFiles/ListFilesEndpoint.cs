@@ -16,14 +16,30 @@ public class ListFilesEndpoint : EndpointWithoutRequest<ListFilesResponse>
     public override async Task HandleAsync(CancellationToken ct)
     {
         (Guid Id, string Name)[] storedFiles = await FileService.GetStoredFiles(ct);
+        HttpRequest request = HttpContext.Request;
 
         Response = new ListFilesResponse
         {
             Files = storedFiles
-                .Select(tuple => new ListFilesFileModel
+                .Select(tuple =>
                 {
-                    FileName = tuple.Name,
-                    ShareLink = $"https://example.com/l/{tuple.Id}",
+                    UriBuilder uriBuilder = new()
+                    {
+                        Scheme = request.Scheme,
+                        Host = request.Host.Host,
+                        Path = $"/l/{tuple.Id}"
+                    };
+
+                    if (request.Host.Port.HasValue)
+                    {
+                        uriBuilder.Port = request.Host.Port.Value;
+                    }
+
+                    return new ListFilesFileModel
+                    {
+                        FileName = tuple.Name,
+                        ShareLink = uriBuilder.Uri.ToString(),
+                    };
                 })
                 .ToArray(),
         };
