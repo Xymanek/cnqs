@@ -34,12 +34,12 @@ public class DummyFileService
         }
     }
 
-    public Stream GetFileForRead(Guid fileId)
+    public FileInfo GetFileForRead(Guid fileId)
     {
         string fileDirectory = Path.Combine(_storageDirectory, fileId.ToString());
         string fileName = Directory.EnumerateFiles(fileDirectory).Single();
         string filePath = Path.Combine(fileDirectory, fileName);
 
-        return File.OpenRead(filePath);
+        return new FileInfo(filePath);
     }
 }
