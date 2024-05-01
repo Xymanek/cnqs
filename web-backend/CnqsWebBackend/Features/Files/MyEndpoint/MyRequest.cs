@@ -1,5 +1,8 @@
-﻿namespace CnqsWebBackend.Features.Files.MyEndpoint;
+﻿using JetBrains.Annotations;
 
+namespace CnqsWebBackend.Features.Files.MyEndpoint;
+
+[UsedImplicitly]
 public class MyRequest
 {
     public required string FirstName { get; set; }

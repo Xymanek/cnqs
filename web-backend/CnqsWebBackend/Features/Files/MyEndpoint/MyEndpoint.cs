@@ -1,7 +1,9 @@
 ﻿using FastEndpoints;
+using JetBrains.Annotations;
 
 namespace CnqsWebBackend.Features.Files.MyEndpoint;
 
+[UsedImplicitly]
 public class MyEndpoint : Endpoint<MyRequest, MyResponse>
 {
     public override void Configure()
@@ -10,12 +12,14 @@ public class MyEndpoint : Endpoint<MyRequest, MyResponse>
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(MyRequest req, CancellationToken ct)
+    public override Task HandleAsync(MyRequest req, CancellationToken ct)
     {
-        await SendAsync(new MyResponse
+        Response = new MyResponse
         {
             FullName = req.FirstName + " " + req.LastName,
             IsOver18 = req.Age > 18,
-        });
+        };
+
+        return Task.CompletedTask;
     }
 }

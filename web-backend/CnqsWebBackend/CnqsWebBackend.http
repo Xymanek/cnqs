@@ -1,5 +1,7 @@
 @CnqsWebBackend_HostAddress = http://localhost:5041
 
+### Over 18
+
 POST {{CnqsWebBackend_HostAddress}}/api/user/create
 Content-Type: application/json
 Accept: application/json
@@ -10,7 +12,7 @@ Accept: application/json
   "age": 22
 }
 
-###
+### Dummy data
 
 POST {{CnqsWebBackend_HostAddress}}/api/user/create
 Content-Type: application/json
