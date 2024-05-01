@@ -16,6 +16,8 @@ builder.Services
         };
     });
 
+builder.Services.AutoRegister();
+
 WebApplication app = builder.Build();
 
 app
