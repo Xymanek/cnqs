@@ -1,5 +1,7 @@
 @CnqsWebBackend_HostAddress = http://localhost:5041
 
+# Note: outdated for now
+
 ### Over 18
 
 POST {{CnqsWebBackend_HostAddress}}/api/user/create
