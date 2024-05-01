@@ -20,8 +20,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: spa/yarn.lock
 
-      # https://stackoverflow.com/a/69944063/2588539
-      - run: yarn install --immutable --immutable-cache --check-cache
+      - run: yarn install --immutable
         working-directory: ./spa
 
       - run: yarn lint:eslint
@@ -56,8 +55,7 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: spa/yarn.lock
 
-      # https://stackoverflow.com/a/69944063/2588539
-      - run: yarn install --immutable --immutable-cache --check-cache
+      - run: yarn install --immutable
         working-directory: ./spa
 
       - run: yarn build
