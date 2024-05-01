@@ -28,9 +28,9 @@ public class DummyFileService
             string directoryName = Path.GetFileName(directoryPath);
             Guid guid = Guid.Parse(directoryName);
 
-            string fileName = Directory.EnumerateFiles(directoryPath).Single();
+            string filePath = Directory.EnumerateFiles(directoryPath).Single();
 
-            yield return (guid, fileName);
+            yield return (guid, Path.GetFileName(filePath));
         }
     }
 
