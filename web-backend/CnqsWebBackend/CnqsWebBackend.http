@@ -1,6 +1,23 @@
 @CnqsWebBackend_HostAddress = http://localhost:5041
 
-GET {{CnqsWebBackend_HostAddress}}/weatherforecast/
+POST {{CnqsWebBackend_HostAddress}}/api/user/create
+Content-Type: application/json
 Accept: application/json
 
+{
+  "firstName": "string2",
+  "lastName": "string3",
+  "age": 22
+}
+
 ###
+
+POST {{CnqsWebBackend_HostAddress}}/api/user/create
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "string",
+  "lastName": "string",
+  "age": 0
+}
