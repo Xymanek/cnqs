@@ -23,7 +23,7 @@ export function RecentFiles() {
 }
 
 function RecentFilesContent() {
-  const {error, data } = useInternalListFiles();
+  const { error, data } = useInternalListFiles();
 
   if (error) return `An error has occurred: ${error.message}`;
   if (!data) return '';
