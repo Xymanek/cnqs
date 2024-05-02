@@ -3,8 +3,13 @@ import { NoRecentFiles } from './NoRecentFiles';
 import { RecentFile } from './RecentFile';
 import { useListFiles } from '@/data/files/use-list-files';
 
+function useInternalListFiles() {
+  // We will be using live results, so we don't want automatic refetching
+  return useListFiles({ refreshOnFocus: false });
+}
+
 export function RecentFiles() {
-  const { isFetching } = useListFiles();
+  const { isFetching } = useInternalListFiles();
 
   return (
     <Stack>
@@ -18,7 +23,7 @@ export function RecentFiles() {
 }
 
 function RecentFilesContent() {
-  const { isSuccess, error, data } = useListFiles();
+  const { isSuccess, error, data } = useInternalListFiles();
 
   if (error) return `An error has occurred: ${error.message}`;
   if (!isSuccess) return '';
