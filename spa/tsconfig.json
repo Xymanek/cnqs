@@ -19,6 +19,7 @@
     "paths": {
       "@/components/*": ["./src/components/*"],
       "@/data/*": ["./src/data/*"],
+      "@/backend-api/*": ["./src/backend-api/*"],
       "@test-utils": ["./test-utils"]
     }
   },

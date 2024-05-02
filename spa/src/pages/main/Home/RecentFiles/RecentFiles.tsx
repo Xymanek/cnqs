@@ -23,12 +23,12 @@ export function RecentFiles() {
 }
 
 function RecentFilesContent() {
-  const { isSuccess, error, data } = useInternalListFiles();
+  const {error, data } = useInternalListFiles();
 
   if (error) return `An error has occurred: ${error.message}`;
-  if (!isSuccess) return '';
+  if (!data) return '';
 
-  if (data.files.length < 1) {
+  if (data.files!.length < 1) {
     return <NoRecentFiles />;
   }
 
