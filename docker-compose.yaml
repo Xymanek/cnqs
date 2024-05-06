@@ -1,0 +1,59 @@
+version: '3'
+
+services: 
+  database:
+    image: postgres
+    mem_limit: 150m
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - '18010:5432'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "postgres", "-U", "postgres"]
+      interval: '10s'
+      timeout: '30s'
+      retries: 5
+      start_period: '20s'
+  
+  minio:
+    image: docker.io/bitnami/minio
+    mem_limit: 200m
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: Password!1
+    volumes:
+      - minio_data:/data
+    ports:
+      - '18011:9000'
+      - '18012:9001'
+
+  zitadel:
+    image: 'ghcr.io/zitadel/zitadel:latest'
+    command: 'start-from-init --masterkey "MasterkeyNeedsToHave32Characters" --tlsMode disabled'
+    environment:
+      - 'ZITADEL_DATABASE_POSTGRES_HOST=database'
+      - 'ZITADEL_DATABASE_POSTGRES_PORT=5432'
+      - 'ZITADEL_DATABASE_POSTGRES_DATABASE=zitadel'
+      - 'ZITADEL_DATABASE_POSTGRES_USER_USERNAME=zitadel'
+      - 'ZITADEL_DATABASE_POSTGRES_USER_PASSWORD=zitadel'
+      - 'ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE=disable'
+      - 'ZITADEL_DATABASE_POSTGRES_ADMIN_USERNAME=postgres'
+      - 'ZITADEL_DATABASE_POSTGRES_ADMIN_PASSWORD=postgres'
+      - 'ZITADEL_DATABASE_POSTGRES_ADMIN_SSL_MODE=disable'
+      - 'ZITADEL_EXTERNALSECURE=false'
+      - 'ZITADEL_EXTERNALPORT=18013'
+      - 'ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME=admin' # Password1!
+      - 'ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORDCHANGEREQUIRED=false'
+    depends_on:
+      database:
+        condition: 'service_healthy'
+    ports:
+      - '18013:8080'
+
+volumes: 
+  db_data:
+  minio_data:
+  
