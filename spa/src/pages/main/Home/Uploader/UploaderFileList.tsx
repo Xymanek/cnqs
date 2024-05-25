@@ -1,11 +1,16 @@
 import { UploaderFileIndicator } from './UploaderFileIndicator';
+import { FileToUpload } from './Uploader';
 
-export function UploaderFileList() {
+interface UploaderFileListProps {
+  files: FileToUpload[];
+}
+
+export function UploaderFileList({ files }: UploaderFileListProps) {
   return (
     <>
-      <UploaderFileIndicator />
-      <UploaderFileIndicator />
-      <UploaderFileIndicator />
+      {files.map((file) => (
+        <UploaderFileIndicator file={file} key={file.id} />
+      ))}
     </>
   );
 }

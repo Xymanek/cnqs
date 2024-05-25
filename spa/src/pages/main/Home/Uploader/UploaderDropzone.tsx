@@ -1,11 +1,17 @@
 import { Group, Text, rem } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
-import { Dropzone } from '@mantine/dropzone';
+import { Dropzone, FileWithPath } from '@mantine/dropzone';
 
-export function UploaderDropzone() {
+export function UploaderDropzone(props?: { onNewFile?: (file: FileWithPath) => void }) {
+  function acceptFiles(files: FileWithPath[]): void {
+    for (let file of files) {
+      props?.onNewFile?.(file);
+    }
+  }
+
   return (
     <Dropzone
-      onDrop={(files) => console.log('accepted files', files)}
+      onDrop={acceptFiles}
       onReject={(files) => console.log('rejected files', files)}
       maxSize={5 * 1024 ** 2}
     >

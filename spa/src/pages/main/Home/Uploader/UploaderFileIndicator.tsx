@@ -12,19 +12,26 @@ import {
   Text,
   Button,
 } from '@mantine/core';
-import React, { useState } from 'react';
-import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { IconCheck, IconFileFilled, IconPencil, IconX } from '@tabler/icons-react';
 import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
+import { useMutation } from '@tanstack/react-query';
+import { UploadApi } from '@/backend-api/apis';
+import { FileToUpload } from './Uploader';
+import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
-export function UploaderFileIndicator() {
+interface UploaderFileIndicatorProps {
+  file: FileToUpload;
+}
+
+export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
+  useUploadOnMount(file);
+
   return (
     <Paper shadow="xs" withBorder p="xl">
       <Grid>
         <Grid.Col span={2}>
-          <Image
-            radius="sm"
-            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png"
-          />
+          <UploaderFilePreview file={file.file} />
         </Grid.Col>
 
         <Grid.Col span={10}>
@@ -36,6 +43,60 @@ export function UploaderFileIndicator() {
       </Grid>
     </Paper>
   );
+}
+
+function useUploadOnMount(file: FileToUpload) {
+  const { mutate, reset: resetMutation } = useMutation({
+    mutationFn: () =>
+      new UploadApi().uploadFileEndpoint({
+        file: new Blob([file.file]),
+        autoShare: true,
+      }),
+
+    mutationKey: ['upload', file.id],
+  });
+
+  const startedCurrentBuffer = useRef<FileWithPath>();
+
+  useEffect(() => {
+    if (startedCurrentBuffer.current !== file.file) {
+      startedCurrentBuffer.current = file.file;
+      mutate();
+    }
+
+    return () => resetMutation();
+  }, [file.file]);
+}
+
+function UploaderFilePreview(props: { file: FileWithPath }) {
+  // @ts-ignore
+  const isPreviewableImage = IMAGE_MIME_TYPE.includes(props.file.type);
+  const [previewSource, setPreviewSource] = useState<FileReader['result']>();
+
+  useEffect(() => {
+    if (!FileReader) return;
+    if (!isPreviewableImage) return;
+
+    const fr = new FileReader();
+    fr.onload = function () {
+      setPreviewSource(fr.result);
+    };
+    fr.readAsDataURL(new Blob([props.file]));
+
+    return () => fr.abort();
+  }, [props.file]);
+
+  if (!isPreviewableImage) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <IconFileFilled style={{ width: rem(60), height: rem(60) }} />
+      </div>
+    );
+  }
+
+  // TODO better sizing
+  return <Image radius="sm" src={previewSource} style={{ maxHeight: '200px' }} />;
+  // https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png
 }
 
 export function UploaderFileName() {
