@@ -1,24 +1,24 @@
 import {
-  Paper,
+  ActionIcon,
+  Button,
+  Flex,
   Grid,
   Image,
+  Paper,
   Progress,
-  Stack,
-  TextInput,
   rem,
   Space,
-  Flex,
-  ActionIcon,
+  Stack,
   Text,
-  Button,
+  TextInput,
 } from '@mantine/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { IconCheck, IconFileFilled, IconPencil, IconX } from '@tabler/icons-react';
 import { useMutation } from '@tanstack/react-query';
 import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
 import { UploadApi } from '@/backend-api/apis';
-import { FileToUpload } from './UploaderShared';
+import { ChangeUserSelectedName, FileToUpload } from './UploaderShared';
 
 interface UploaderFileIndicatorProps {
   file: FileToUpload;
@@ -26,6 +26,12 @@ interface UploaderFileIndicatorProps {
 
 export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
   useUploadOnMount(file);
+
+  const setUserSelectedName = useContext(ChangeUserSelectedName);
+
+  function handleNewUserFileName(newName: string): void {
+    setUserSelectedName(file.id, newName);
+  }
 
   return (
     <Paper shadow="xs" withBorder p="xl">
@@ -36,7 +42,10 @@ export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
 
         <Grid.Col span={10}>
           <Stack>
-            <UploaderFileName />
+            <UploaderFileName
+              fileName={file.userProvidedName}
+              onNewFileName={handleNewUserFileName}
+            />
             <Progress size="lg" value={40} animated />
           </Stack>
         </Grid.Col>
@@ -100,20 +109,22 @@ function UploaderFilePreview(props: { file: FileWithPath }) {
   // https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png
 }
 
-export function UploaderFileName() {
-  const [fileName, setFileName] = useState('File.jpg');
-  const [fileNameEdit, setFileNameEdit] = useState(fileName);
+export function UploaderFileName(props: {
+  fileName: string;
+  onNewFileName: (newFileName: string) => void;
+}) {
+  const [fileNameEdit, setFileNameEdit] = useState(props.fileName);
   const [isEditingFileName, setIsEditingFileName] = useState(false);
 
   function startEdit() {
-    setFileNameEdit(fileName);
+    setFileNameEdit(props.fileName);
     setIsEditingFileName(true);
   }
 
   if (!isEditingFileName) {
     return (
       <Flex gap="xs">
-        <Text>{fileName}</Text>
+        <Text>{props.fileName}</Text>
         <ActionIcon variant="subtle" aria-label="Edit file name" onClick={startEdit}>
           <IconPencil
             style={{
@@ -133,7 +144,7 @@ export function UploaderFileName() {
 
   function confirmEdit() {
     setIsEditingFileName(false);
-    setFileName(fileNameEdit);
+    props.onNewFileName(fileNameEdit);
   }
 
   return (
