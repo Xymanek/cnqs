@@ -4,7 +4,7 @@ import { Dropzone, FileWithPath } from '@mantine/dropzone';
 
 export function UploaderDropzone(props?: { onNewFile?: (file: FileWithPath) => void }) {
   function acceptFiles(files: FileWithPath[]): void {
-    for (let file of files) {
+    for (const file of files) {
       props?.onNewFile?.(file);
     }
   }

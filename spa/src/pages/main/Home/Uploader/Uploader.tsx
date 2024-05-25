@@ -1,15 +1,11 @@
 import { Stack } from '@mantine/core';
-import { UploaderDropzone } from './UploaderDropzone';
-import { UploaderNeedToLogin } from './UploaderNeedToLogin';
-import { UploaderFileList } from './UploaderFileList';
 import { useState } from 'react';
 import { FileWithPath } from '@mantine/dropzone';
 import { v4 as uuidV4 } from 'uuid';
-
-export type FileToUpload = {
-  file: FileWithPath;
-  id: string;
-};
+import { UploaderDropzone } from './UploaderDropzone';
+import { UploaderNeedToLogin } from './UploaderNeedToLogin';
+import { UploaderFileList } from './UploaderFileList';
+import { FileToUpload } from './UploaderShared';
 
 export function Uploader() {
   const [files, setFiles] = useState([] as FileToUpload[]);

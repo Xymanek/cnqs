@@ -14,11 +14,11 @@ import {
 } from '@mantine/core';
 import React, { useEffect, useRef, useState } from 'react';
 import { IconCheck, IconFileFilled, IconPencil, IconX } from '@tabler/icons-react';
-import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
 import { useMutation } from '@tanstack/react-query';
-import { UploadApi } from '@/backend-api/apis';
-import { FileToUpload } from './Uploader';
 import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
+import { UploadApi } from '@/backend-api/apis';
+import { FileToUpload } from './UploaderShared';
 
 interface UploaderFileIndicatorProps {
   file: FileToUpload;
@@ -78,11 +78,12 @@ function UploaderFilePreview(props: { file: FileWithPath }) {
     if (!isPreviewableImage) return;
 
     const fr = new FileReader();
-    fr.onload = function () {
+    fr.onload = () => {
       setPreviewSource(fr.result);
     };
     fr.readAsDataURL(new Blob([props.file]));
 
+    // eslint-disable-next-line consistent-return
     return () => fr.abort();
   }, [props.file]);
 

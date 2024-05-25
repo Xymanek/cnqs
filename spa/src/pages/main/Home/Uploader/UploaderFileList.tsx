@@ -1,5 +1,5 @@
 import { UploaderFileIndicator } from './UploaderFileIndicator';
-import { FileToUpload } from './Uploader';
+import { FileToUpload } from './UploaderShared';
 
 interface UploaderFileListProps {
   files: FileToUpload[];
