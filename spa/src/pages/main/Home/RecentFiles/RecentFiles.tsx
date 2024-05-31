@@ -18,9 +18,9 @@ export function RecentFiles() {
 }
 
 function RecentFilesContent() {
-  const { data, error, isLoading } = useListUploadedFilesQuery();
+  const { data, isError } = useListUploadedFilesQuery();
 
-  if (error) return `An error has occurred`; // TODO: error message
+  if (isError) return 'An error has occurred';
   if (!data) return '';
 
   if (data.files!.length < 1) {

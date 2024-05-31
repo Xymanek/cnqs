@@ -9,7 +9,12 @@ export const store = configureStore({
     [uploaderSlice.reducerPath]: uploaderSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [uploaderSlice.actions.addFile.type],
+        ignoredPaths: [/uploader\.files\.[0-9]+\.file/],
+      },
+    })
       .prepend(uploaderTriggerMiddleware.middleware)
       .concat(backendApi.middleware),
 });
