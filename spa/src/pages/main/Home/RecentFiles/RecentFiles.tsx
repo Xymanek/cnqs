@@ -1,15 +1,10 @@
 import { Group, Loader, Stack, Title } from '@mantine/core';
 import { NoRecentFiles } from './NoRecentFiles';
 import { RecentFile } from './RecentFile';
-import { useListFiles } from '@/data/files/use-list-files';
-
-function useInternalListFiles() {
-  // We will be using live results, so we don't want automatic refetching
-  return useListFiles({ refreshOnFocus: false });
-}
+import { useListUploadedFilesQuery } from '@/data/backendApi';
 
 export function RecentFiles() {
-  const { isFetching } = useInternalListFiles();
+  const { isFetching } = useListUploadedFilesQuery();
 
   return (
     <Stack>
@@ -23,9 +18,9 @@ export function RecentFiles() {
 }
 
 function RecentFilesContent() {
-  const { error, data } = useInternalListFiles();
+  const { data, error, isLoading } = useListUploadedFilesQuery();
 
-  if (error) return `An error has occurred: ${error.message}`;
+  if (error) return `An error has occurred`; // TODO: error message
   if (!data) return '';
 
   if (data.files!.length < 1) {

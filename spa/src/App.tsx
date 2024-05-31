@@ -3,22 +3,19 @@ import '@mantine/dropzone/styles.css';
 
 import { MantineProvider } from '@mantine/core';
 import { StrictMode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Provider } from 'react-redux';
 import { Router } from './Router';
 import { theme } from './theme';
-
-const queryClient = new QueryClient();
+import { store } from '@/data/store';
 
 export default function App() {
   return (
     <StrictMode>
-      <MantineProvider theme={theme}>
-        <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <MantineProvider theme={theme}>
           <Router />
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </MantineProvider>
+        </MantineProvider>
+      </Provider>
     </StrictMode>
   );
 }

@@ -12,25 +12,23 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconCheck, IconFileFilled, IconPencil, IconX } from '@tabler/icons-react';
-import { useMutation } from '@tanstack/react-query';
 import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
-import { UploadApi } from '@/backend-api/apis';
-import { ChangeUserSelectedName, FileToUpload } from './UploaderShared';
+import { FileToUpload } from './UploaderShared';
+import { useAppDispatch } from '@/data/hooks';
+import { changeDisplayName } from '@/data/uploader/uploaderSlice';
 
 interface UploaderFileIndicatorProps {
   file: FileToUpload;
 }
 
 export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
-  useUploadOnMount(file);
-
-  const setUserSelectedName = useContext(ChangeUserSelectedName);
+  const dispatch = useAppDispatch();
 
   function handleNewUserFileName(newName: string): void {
-    setUserSelectedName(file.id, newName);
+    dispatch(changeDisplayName({ id: file.id, newName }));
   }
 
   return (
@@ -52,29 +50,6 @@ export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
       </Grid>
     </Paper>
   );
-}
-
-function useUploadOnMount(file: FileToUpload) {
-  const { mutate, reset: resetMutation } = useMutation({
-    mutationFn: () =>
-      new UploadApi().uploadFileEndpoint({
-        file: new Blob([file.file]),
-        autoShare: true,
-      }),
-
-    mutationKey: ['upload', file.id],
-  });
-
-  const startedCurrentBuffer = useRef<FileWithPath>();
-
-  useEffect(() => {
-    if (startedCurrentBuffer.current !== file.file) {
-      startedCurrentBuffer.current = file.file;
-      mutate();
-    }
-
-    return () => resetMutation();
-  }, [file.file]);
 }
 
 function UploaderFilePreview(props: { file: FileWithPath }) {
