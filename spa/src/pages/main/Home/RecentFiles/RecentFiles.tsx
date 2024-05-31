@@ -1,10 +1,10 @@
 import { Group, Loader, Stack, Title } from '@mantine/core';
 import { NoRecentFiles } from './NoRecentFiles';
 import { RecentFile } from './RecentFile';
-import { useListUploadedFilesQuery } from '@/data/backendApi';
+import { useListFilesEndpointQuery } from '@/data/backendApi';
 
 export function RecentFiles() {
-  const { isFetching } = useListUploadedFilesQuery();
+  const { isFetching } = useListFilesEndpointQuery();
 
   return (
     <Stack>
@@ -18,7 +18,7 @@ export function RecentFiles() {
 }
 
 function RecentFilesContent() {
-  const { data, isError } = useListUploadedFilesQuery();
+  const { data, isError } = useListFilesEndpointQuery();
 
   if (isError) return 'An error has occurred';
   if (!data) return '';
