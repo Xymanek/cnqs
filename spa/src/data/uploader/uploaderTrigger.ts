@@ -12,12 +12,10 @@ uploaderTriggerMiddleware.startListening({
   actionCreator: uploaderSlice.actions.addFile,
   effect: (action, api) => {
     api.dispatch(
-      backendApi.endpoints.uploadFileEndpoint.initiate(
+      backendApi.endpoints.uploadFile.initiate(
         {
-          uploadFileRequest: {
-            file: new Blob([action.payload.file]),
-            autoShare: true,
-          },
+          file: new Blob([action.payload.file]),
+          autoShare: true,
         },
         {
           fixedCacheKey: getUploadMutationKey(action.payload),

@@ -4,5 +4,3 @@
 *.d.ts
 *.d.mts
 vite.config.ts
-
-src/data/backendApi.ts
