@@ -5,6 +5,7 @@ services:
     image: postgres
     mem_limit: 150m
     environment:
+      POSTGRES_DB: cnqs
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
@@ -22,13 +23,17 @@ services:
     image: docker.io/bitnami/minio
     mem_limit: 200m
     environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: Password!1
+      MINIO_ROOT_USER: minio_admin
+      MINIO_ROOT_PASSWORD: minio_admin_password
+      MINIO_DEFAULT_BUCKETS: cnqs-uploads
+      MINIO_API_PORT_NUMBER: 18011
+      MINIO_CONSOLE_PORT_NUMBER: 18012
+      MINIO_DOMAIN: localhost
     volumes:
       - minio_data:/data
     ports:
-      - '18011:9000'
-      - '18012:9001'
+      - '18011:18011'
+      - '18012:18012'
 
   zitadel:
     image: 'ghcr.io/zitadel/zitadel:latest'

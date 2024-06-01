@@ -15,17 +15,61 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateFileRequest,
+  CreateFileResponse,
   ListFilesResponse,
 } from '../models/index';
 import {
+    CreateFileRequestFromJSON,
+    CreateFileRequestToJSON,
+    CreateFileResponseFromJSON,
+    CreateFileResponseToJSON,
     ListFilesResponseFromJSON,
     ListFilesResponseToJSON,
 } from '../models/index';
+
+export interface CreateFileEndpointRequest {
+    createFileRequest: CreateFileRequest;
+}
 
 /**
  * 
  */
 export class FilesApi extends runtime.BaseAPI {
+
+    /**
+     */
+    async createFileEndpointRaw(requestParameters: CreateFileEndpointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateFileResponse>> {
+        if (requestParameters['createFileRequest'] == null) {
+            throw new runtime.RequiredError(
+                'createFileRequest',
+                'Required parameter "createFileRequest" was null or undefined when calling createFileEndpoint().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/files`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateFileRequestToJSON(requestParameters['createFileRequest']),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateFileResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async createFileEndpoint(requestParameters: CreateFileEndpointRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateFileResponse> {
+        const response = await this.createFileEndpointRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      */

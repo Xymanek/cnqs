@@ -1,6 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ListFilesResponse, type UploadFileResponse } from '@/backend-api/models';
+import {
+  CreateFileRequest,
+  CreateFileRequestToJSON,
+  CreateFileResponse,
+  CreateFileResponseFromJSON,
+  ListFilesResponse,
+  type UploadFileResponse,
+} from '@/backend-api/models';
 import { UploadFileEndpointRequest } from '@/backend-api/apis';
+import { RootState } from '@/data/store';
 
 export const backendApi = createApi({
   reducerPath: 'backendApi',
@@ -23,7 +31,29 @@ export const backendApi = createApi({
         };
       },
     }),
+    createFile: builder.mutation<CreateFileResponse, CreateFileRequest>({
+      query: (req) => ({
+        url: '/api/files',
+        method: 'POST',
+        body: CreateFileRequestToJSON(req),
+      }),
+      transformResponse: (baseQueryReturnValue): CreateFileResponse =>
+        CreateFileResponseFromJSON(baseQueryReturnValue),
+    }),
+    transferFile: builder.mutation<CreateFileResponse, CreateFileRequest>({
+      queryFn: async (arg, api) => {
+        (api.getState() as RootState).uploader.files[0].file;
+
+        await new Promise(() => {});
+
+        return {
+          data: {} as CreateFileResponse,
+        };
+      },
+    }),
   }),
 });
+
+// backendApi.endpoints.createFile.select('').
 
 export const { useListUploadedFilesQuery, useUploadFileMutation } = backendApi;

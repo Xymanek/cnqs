@@ -16,9 +16,8 @@ import React, { useEffect, useState } from 'react';
 import { IconCheck, IconFileFilled, IconPencil, IconX } from '@tabler/icons-react';
 import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
-import { FileToUpload } from './UploaderShared';
 import { useAppDispatch } from '@/data/hooks';
-import { changeDisplayName } from '@/data/uploader/uploaderSlice';
+import { changeDisplayName, FileToUpload } from '@/data/uploader/uploaderSlice';
 
 interface UploaderFileIndicatorProps {
   file: FileToUpload;
@@ -28,7 +27,7 @@ export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
   const dispatch = useAppDispatch();
 
   function handleNewUserFileName(newName: string): void {
-    dispatch(changeDisplayName({ id: file.id, newName }));
+    dispatch(changeDisplayName({ id: file.clientId, newName }));
   }
 
   return (
@@ -41,7 +40,7 @@ export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
         <Grid.Col span={10}>
           <Stack>
             <UploaderFileName
-              fileName={file.userProvidedName}
+              fileName={file.displayName}
               onNewFileName={handleNewUserFileName}
             />
             <Progress size="lg" value={40} animated />

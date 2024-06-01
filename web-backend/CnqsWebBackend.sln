@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnqsWebBackend", "CnqsWebBackend\CnqsWebBackend.csproj", "{2FFDD529-2964-42DF-B5E2-55770490F7F2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{9DD972BD-547C-4D52-AAC8-F90B502336DB}"
+	ProjectSection(SolutionItems) = preProject
+		..\docker-compose.yaml = ..\docker-compose.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

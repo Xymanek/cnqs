@@ -1,7 +1,25 @@
+using CnqsWebBackend.Data;
+using CnqsWebBackend.DiExtensions;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder();
+WebApplicationBuilder builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    // TODO: for some reason this is required for EF CLI (to load user secrets)
+    ApplicationName = typeof(ApplicationDbContext).Assembly.GetName().Name,
+});
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("Default"),
+        npgsql => npgsql.UseNodaTime()
+    );
+});
+
+builder.Services.AddCnqsFileStorage();
 
 builder.Services
     .AddFastEndpoints()
@@ -10,11 +28,10 @@ builder.Services
         o.AutoTagPathSegmentIndex = 2;
         o.ShortSchemaNames = true;
 
-        o.DocumentSettings = s =>
-        {
-            s.Title = "CloudNativeQuickShare API";
-        };
+        o.DocumentSettings = s => { s.Title = "CloudNativeQuickShare API"; };
     });
+
+builder.Services.AddSingleton<IClock>(SystemClock.Instance);
 
 builder.Services.AutoRegister();
 
@@ -32,10 +49,7 @@ WebApplication app = builder.Build();
 app.UseCors();
 
 app
-    .UseFastEndpoints(c =>
-    {
-        c.Endpoints.ShortNames = true;
-    })
+    .UseFastEndpoints(c => { c.Endpoints.ShortNames = true; })
     .UseSwaggerGen();
 
 app.Run();
