@@ -1,21 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import axios from 'axios';
-import { ListFilesResponse, type UploadFileResponse } from '@/backend-api/models';
-import { UploadFileEndpointRequest } from '@/backend-api/apis';
 import type { components } from './backendApi.types';
 import { selectFileByClientId, setUploadProgress } from '@/data/uploader/uploaderSlice';
 import { RootState } from '@/data/store';
 
-export type BackendApiSchemas = components['schemas'];
+// noinspection SpellCheckingInspection
+export type BEAS = components['schemas'];
 
 export const backendApi = createApi({
   reducerPath: 'backendApi',
   baseQuery: fetchBaseQuery({ baseUrl: '/' }),
   endpoints: (builder) => ({
-    listUploadedFiles: builder.query<ListFilesResponse, void>({
+    listUploadedFiles: builder.query<BEAS['ListFilesResponse'], void>({
       query: () => 'api/files',
     }),
-    uploadFile: builder.mutation<UploadFileResponse, UploadFileEndpointRequest>({
+    uploadFile: builder.mutation<BEAS['UploadFileResponse'], BEAS['UploadFileRequest']>({
       query: (req) => {
         const formData = new FormData();
 
@@ -29,10 +28,7 @@ export const backendApi = createApi({
         };
       },
     }),
-    createFile: builder.mutation<
-      BackendApiSchemas['CreateFileResponse'],
-      BackendApiSchemas['CreateFileRequest']
-    >({
+    createFile: builder.mutation<BEAS['CreateFileResponse'], BEAS['CreateFileRequest']>({
       query: (req) => ({
         url: '/api/files',
         method: 'POST',
@@ -47,12 +43,12 @@ export const backendApi = createApi({
 
         await axios.put(fileToUpload.uploadUrl!, fileToUpload.file, {
           headers: {
-            'Content-Type': fileToUpload.file.type,
+            'Content-Type': null,
           },
           onUploadProgress: (progressEvent) => {
             api.dispatch(setUploadProgress({ id: arg, progress: progressEvent.progress }));
           },
-          // cancelToken: new Ca // TODO
+          signal: api.signal,
         });
 
         return {
@@ -63,4 +59,4 @@ export const backendApi = createApi({
   }),
 });
 
-export const { useListUploadedFilesQuery, useUploadFileMutation } = backendApi;
+export const { useListUploadedFilesQuery } = backendApi;

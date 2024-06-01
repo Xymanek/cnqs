@@ -52,7 +52,7 @@ export const uploaderSlice = createSlice({
           file.uploadProgress = action.payload.progress;
         }
       }
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(backendApi.endpoints.createFile.matchFulfilled, (state, action) => {

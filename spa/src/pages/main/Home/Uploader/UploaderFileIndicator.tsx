@@ -30,6 +30,9 @@ export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
     dispatch(changeDisplayName({ id: file.clientId, newName }));
   }
 
+  const progressUndermined = file.uploadProgress === undefined;
+  const progress = file.uploadProgress === undefined ? 100 : file.uploadProgress * 100;
+
   return (
     <Paper shadow="xs" withBorder p="xl">
       <Grid>
@@ -39,11 +42,8 @@ export function UploaderFileIndicator({ file }: UploaderFileIndicatorProps) {
 
         <Grid.Col span={10}>
           <Stack>
-            <UploaderFileName
-              fileName={file.displayName}
-              onNewFileName={handleNewUserFileName}
-            />
-            <Progress size="lg" value={40} animated />
+            <UploaderFileName fileName={file.displayName} onNewFileName={handleNewUserFileName} />
+            <Progress size="lg" value={progress} animated={progressUndermined} />
           </Stack>
         </Grid.Col>
       </Grid>

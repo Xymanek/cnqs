@@ -13,7 +13,7 @@ export function UploaderDropzone(props?: { onNewFile?: (file: FileWithPath) => v
     <Dropzone
       onDrop={acceptFiles}
       onReject={(files) => console.log('rejected files', files)}
-      maxSize={5 * 1024 ** 2}
+      maxSize={100 * 1024 ** 2}
     >
       <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
         <Dropzone.Accept>
@@ -40,7 +40,7 @@ export function UploaderDropzone(props?: { onNewFile?: (file: FileWithPath) => v
             Drag images here or click to select files
           </Text>
           <Text size="sm" c="dimmed" inline mt={7}>
-            Attach as many files as you like, each file should not exceed 5mb
+            Attach as many files as you like, each file should not exceed 100mb
           </Text>
         </div>
       </Group>
