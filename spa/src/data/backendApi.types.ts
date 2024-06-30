@@ -66,6 +66,7 @@ export interface components {
     CreateFileRequest: {
       /** Format: guid */
       clientId?: string;
+      contentType?: string;
       displayName?: string;
     };
   };

@@ -19,6 +19,7 @@ uploaderTriggerMiddleware.startListening({
       backendApi.endpoints.createFile.initiate(
         {
           clientId: action.payload.clientId,
+          contentType: action.payload.file.type,
           displayName: action.payload.displayName,
         },
         {

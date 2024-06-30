@@ -1,3 +1,11 @@
+# CNQS SPA
+
+## Generating API types
+
+```shell
+npx openapi-typescript http://localhost:5041/swagger/v1/swagger.json -o ./src/data/backendApi.types.ts
+```
+
 # Mantine Vite template
 
 ## Features

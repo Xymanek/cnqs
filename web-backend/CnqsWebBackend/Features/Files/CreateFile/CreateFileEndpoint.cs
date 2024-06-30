@@ -57,6 +57,7 @@ public class CreateFileEndpoint : Endpoint<CreateFileRequest, CreateFileResponse
             Verb = HttpVerb.PUT,
             Expires = uploadUrlExpires.UtcDateTime,
             Protocol = S3.Config.UseHttp ? Protocol.HTTP : Protocol.HTTPS,
+            ContentType = req.ContentType,
         });
         
         Response = new CreateFileResponse
