@@ -1,6 +1,6 @@
 import { render, screen, userEvent } from '@test-utils';
 import { expect } from 'vitest';
-import { UploaderFileName } from './UploaderFileIndicator';
+import { UploaderFileName } from './UploaderFileName';
 
 describe('UploaderFileName component', () => {
   it('starts with the file name readonly', () => {

@@ -1,5 +1,5 @@
-import { UploaderFileIndicator } from './UploaderFileIndicator';
 import { FileToUpload } from '@/data/uploader/uploaderSlice';
+import { UploaderFileEntry } from './UploaderFileEntry';
 
 interface UploaderFileListProps {
   files: FileToUpload[];
@@ -9,7 +9,7 @@ export function UploaderFileList({ files }: UploaderFileListProps) {
   return (
     <>
       {files.map((file) => (
-        <UploaderFileIndicator file={file} key={file.clientId} />
+        <UploaderFileEntry file={file} key={file.clientId} />
       ))}
     </>
   );
