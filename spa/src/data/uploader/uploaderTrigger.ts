@@ -18,8 +18,9 @@ uploaderTriggerMiddleware.startListening({
     api.dispatch(
       backendApi.endpoints.createFile.initiate(
         {
-          clientId: action.payload.clientId,
+          clientFileId: action.payload.clientId,
           contentType: action.payload.file.type,
+          fileNameWithExtension: action.payload.file.name,
           displayName: action.payload.displayName,
         },
         {
@@ -33,7 +34,7 @@ uploaderTriggerMiddleware.startListening({
 uploaderTriggerMiddleware.startListening({
   matcher: backendApi.endpoints.createFile.matchFulfilled,
   effect: (action, api) => {
-    const clientId = action.meta.arg.originalArgs.clientId!; // TODO !
+    const clientId = action.meta.arg.originalArgs.clientFileId!; // TODO !
 
     api.dispatch(
       backendApi.endpoints.uploadFileContent.initiate(clientId, {

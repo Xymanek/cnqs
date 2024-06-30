@@ -1,10 +1,14 @@
-﻿namespace CnqsWebBackend.Features.Files.CreateFile;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CnqsWebBackend.Features.Files.CreateFile;
 
 public class CreateFileRequest
 {
-    public required Guid ClientId { get; set; }
+    public required Guid ClientFileId { get; set; }
     public required string ContentType { get; set; }
-    public required string DisplayName { get; set; }
+
+    [MaxLength(250)] public required string FileNameWithExtension { get; set; }
+    [MaxLength(250)] public required string DisplayName { get; set; }
 }
 
 public class CreateFileResponse

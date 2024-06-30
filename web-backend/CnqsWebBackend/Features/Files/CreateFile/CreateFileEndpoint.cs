@@ -22,6 +22,7 @@ public class CreateFileEndpoint : Endpoint<CreateFileRequest, CreateFileResponse
     }
 
     public required IOptions<FileStorageOptions> StorageOptions { private get; init; }
+    public required IFileObjectKeyGenerator KeyGenerator { private get; init; }
     public required ApplicationDbContext DbContext { private get; init; }
     public required IAmazonS3 S3 { private get; init; }
     public required IClock Clock { private get; init; }
@@ -30,9 +31,13 @@ public class CreateFileEndpoint : Endpoint<CreateFileRequest, CreateFileResponse
     {
         FileEntity fileEntity = new()
         {
-            ClientId = req.ClientId,
+            ClientId = req.ClientFileId,
+
+            FileNameWithExtension = req.FileNameWithExtension,
             DisplayName = req.DisplayName,
+
             CreatedAt = Clock.GetCurrentInstant(),
+
             StoreStatus = FileStoreStatus.Pending,
         };
         DbContext.Files.Add(fileEntity);
@@ -46,20 +51,32 @@ public class CreateFileEndpoint : Endpoint<CreateFileRequest, CreateFileResponse
             DbContext.Files.Remove(fileEntity);
 
             fileEntity = await DbContext.Files
-                .SingleAsync(entity => entity.ClientId == req.ClientId, ct);
+                .SingleAsync(entity => entity.ClientId == req.ClientFileId, ct);
+
+            if (fileEntity.StoreStatus != FileStoreStatus.Pending)
+            {
+                AddError(r => r.ClientFileId, "File is no longer pending; creation/upload cannot be repeated");
+            }
+
+            if (fileEntity.FileNameWithExtension != req.FileNameWithExtension)
+            {
+                AddError(r => r.FileNameWithExtension, "File record was already created, filename cannot be changed");
+            }
+
+            ThrowIfAnyErrors();
         }
 
         DateTimeOffset uploadUrlExpires = Clock.GetCurrentInstant().Plus(Duration.FromHours(1)).ToDateTimeOffset();
         string uploadUrl = await S3.GetPreSignedURLAsync(new GetPreSignedUrlRequest
         {
             BucketName = StorageOptions.Value.Bucket,
-            Key = fileEntity.Id.ToString(),
+            Key = KeyGenerator.GetRawFileKey(fileEntity.Id, req.FileNameWithExtension),
             Verb = HttpVerb.PUT,
             Expires = uploadUrlExpires.UtcDateTime,
             Protocol = S3.Config.UseHttp ? Protocol.HTTP : Protocol.HTTPS,
             ContentType = req.ContentType,
         });
-        
+
         Response = new CreateFileResponse
         {
             Id = fileEntity.Id,

@@ -56,7 +56,9 @@ export const uploaderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(backendApi.endpoints.createFile.matchFulfilled, (state, action) => {
-      const file = state.files.find((f) => f.clientId === action.meta.arg.originalArgs.clientId);
+      const file = state.files.find(
+          (f) => f.clientId === action.meta.arg.originalArgs.clientFileId
+      );
       if (!file) return;
 
       file.serverId = action.payload.id;

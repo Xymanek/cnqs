@@ -13,6 +13,7 @@ public class FileEntity
 
     public required Guid ClientId { get; init; }
 
+    [MaxLength(250)] public required string FileNameWithExtension { get; set; }
     [MaxLength(250)] public required string DisplayName { get; set; }
 
     public required FileStoreStatus StoreStatus { get; set; }

@@ -43,7 +43,7 @@ export const backendApi = createApi({
 
         await axios.put(fileToUpload.uploadUrl!, fileToUpload.file, {
           headers: {
-            'Content-Type': null,
+            'Content-Type': fileToUpload.file.type,
           },
           onUploadProgress: (progressEvent) => {
             api.dispatch(setUploadProgress({ id: arg, progress: progressEvent.progress }));
