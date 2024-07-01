@@ -59,4 +59,5 @@ export const backendApi = createApi({
   }),
 });
 
-export const { useListUploadedFilesQuery } = backendApi;
+export const { useListUploadedFilesQuery, useCreateFileMutation, useUploadFileContentMutation } =
+  backendApi;
