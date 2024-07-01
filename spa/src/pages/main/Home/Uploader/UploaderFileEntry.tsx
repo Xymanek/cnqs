@@ -42,6 +42,7 @@ function UploaderFileNameManager({ file }: UploaderFileEntryProps) {
     trigger({ backendFileId: file.serverId, newDisplayName: newName });
   }
 
+  // TODO: green for 2 sec after save was successful
   return (
     <UploaderFileName
       fileName={file.displayName}
