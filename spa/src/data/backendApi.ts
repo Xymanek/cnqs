@@ -3,6 +3,7 @@ import axios from 'axios';
 import type { components } from './backendApi.types';
 import { selectFileByClientId, setUploadProgress } from '@/data/uploader/uploaderSlice';
 import { RootState } from '@/data/store';
+import { fileDisplayNameUpdated } from '@/data/fileManagement/fileDisplayNameUpdated';
 
 // noinspection SpellCheckingInspection
 export type BEAS = components['schemas'];
@@ -56,8 +57,24 @@ export const backendApi = createApi({
         };
       },
     }),
+    changeFileName: builder.mutation<void, Parameters<typeof fileDisplayNameUpdated>[0]>({
+      query: (req) => ({
+        url: `/api/files/${req.backendFileId}/display-name`,
+        method: 'PUT',
+        body: {
+          newDisplayName: req.newDisplayName,
+        } satisfies BEAS['UpdateDisplayNameRequest'],
+      }),
+      onQueryStarted(payload, api): Promise<void> | void {
+        api.dispatch(fileDisplayNameUpdated(payload));
+      },
+    }),
   }),
 });
 
-export const { useListUploadedFilesQuery, useCreateFileMutation, useUploadFileContentMutation } =
-  backendApi;
+export const {
+  useListUploadedFilesQuery,
+  useCreateFileMutation,
+  useUploadFileContentMutation,
+  useChangeFileNameMutation,
+} = backendApi;

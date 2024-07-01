@@ -1,22 +1,16 @@
 import { Grid, Paper, Stack, Text } from '@mantine/core';
 import React from 'react';
-import { useAppDispatch } from '@/data/hooks';
-import { changeDisplayName, FileToUpload } from '@/data/uploader/uploaderSlice';
+import { FileToUpload } from '@/data/uploader/uploaderSlice';
 import { UploaderFilePreview } from './UploaderFilePreview';
 import { UploaderFileName } from './UploaderFileName';
 import { UploaderFileProgress } from './UploaderFileProgress';
+import { useChangeFileNameMutation } from '@/data/backendApi';
 
 interface UploaderFileEntryProps {
   file: FileToUpload;
 }
 
 export function UploaderFileEntry({ file }: UploaderFileEntryProps) {
-  const dispatch = useAppDispatch();
-
-  function handleNewUserFileName(newName: string): void {
-    dispatch(changeDisplayName({ id: file.clientId, newName }));
-  }
-
   return (
     <Paper shadow="xs" withBorder p="xl">
       <Grid>
@@ -26,11 +20,35 @@ export function UploaderFileEntry({ file }: UploaderFileEntryProps) {
 
         <Grid.Col span={10}>
           <Stack>
-            <UploaderFileName fileName={file.displayName} onNewFileName={handleNewUserFileName} />
+            <UploaderFileNameManager file={file} />
             <UploaderFileProgress file={file} successDisplay={<Text>Uploaded!</Text>} />
           </Stack>
         </Grid.Col>
       </Grid>
     </Paper>
+  );
+}
+
+function UploaderFileNameManager({ file }: UploaderFileEntryProps) {
+  // TODO: fixed cache key
+  const [trigger, { isLoading, isError }] = useChangeFileNameMutation();
+
+  function handleNewUserFileName(newName: string): void {
+    if (!file.serverId) {
+      console.error('Rename applied without server ID: ', file);
+      return;
+    }
+
+    trigger({ backendFileId: file.serverId, newDisplayName: newName });
+  }
+
+  return (
+    <UploaderFileName
+      fileName={file.displayName}
+      onNewFileName={handleNewUserFileName}
+      editEnabled={!!file.serverId}
+      isSaving={isLoading}
+      hasSavingFailed={isError}
+    />
   );
 }

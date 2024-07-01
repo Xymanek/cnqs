@@ -8,6 +8,9 @@ export interface paths {
   "/api/upload": {
     post: operations["UploadFileEndpoint"];
   };
+  "/api/files/{FileId}/display-name": {
+    put: operations["UpdateDisplayNameEndpoint"];
+  };
   "/api/files": {
     get: operations["ListFilesEndpoint"];
     post: operations["CreateFileEndpoint"];
@@ -47,6 +50,9 @@ export interface components {
       /** Format: binary */
       file?: string;
       autoShare?: boolean | null;
+    };
+    UpdateDisplayNameRequest: {
+      newDisplayName?: string;
     };
     ListFilesResponse: {
       files?: components["schemas"]["ListFilesFileModel"][];
@@ -102,6 +108,28 @@ export interface operations {
         content: {
           "application/problem+json": components["schemas"]["ErrorResponse"];
         };
+      };
+    };
+  };
+  UpdateDisplayNameEndpoint: {
+    parameters: {
+      path: {
+        fileId: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateDisplayNameRequest"];
+      };
+    };
+    responses: {
+      /** @description No Content */
+      204: {
+        content: never;
+      };
+      /** @description Not Found */
+      404: {
+        content: never;
       };
     };
   };

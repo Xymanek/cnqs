@@ -1,11 +1,24 @@
 import React, { useState } from 'react';
-import { ActionIcon, Button, Flex, rem, Space, Text, TextInput } from '@mantine/core';
-import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Loader,
+  rem,
+  Space,
+  Text,
+  TextInput,
+  Tooltip,
+} from '@mantine/core';
+import { IconCheck, IconPencil, IconRefresh, IconX } from '@tabler/icons-react';
 import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
 
 export function UploaderFileName(props: {
   fileName: string;
   onNewFileName: (newFileName: string) => void;
+  editEnabled: boolean;
+  isSaving: boolean;
+  hasSavingFailed: boolean;
 }) {
   const [fileNameEdit, setFileNameEdit] = useState(props.fileName);
   const [isEditingFileName, setIsEditingFileName] = useState(false);
@@ -18,8 +31,15 @@ export function UploaderFileName(props: {
   if (!isEditingFileName) {
     return (
       <Flex gap="xs">
-        <Text>{props.fileName}</Text>
-        <ActionIcon variant="subtle" aria-label="Edit file name" onClick={startEdit}>
+        <Text c={props.hasSavingFailed && !props.isSaving ? 'red' : undefined}>
+          {props.fileName}
+        </Text>
+        <ActionIcon
+          variant="subtle"
+          aria-label="Edit file name"
+          onClick={startEdit}
+          disabled={!props.editEnabled}
+        >
           <IconPencil
             style={{
               width: '70%',
@@ -28,6 +48,25 @@ export function UploaderFileName(props: {
             stroke={1.5}
           />
         </ActionIcon>
+        {/* TODO: smaller loader */}
+        {props.isSaving ? <Loader /> : null}
+        {props.hasSavingFailed ? (
+          <Tooltip label="Retry">
+            <ActionIcon
+              variant="filled"
+              aria-label="Retry"
+              onClick={() => props.onNewFileName(fileNameEdit)}
+            >
+              <IconRefresh
+                style={{
+                  width: '70%',
+                  height: '70%',
+                }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          </Tooltip>
+        ) : null}
       </Flex>
     );
   }

@@ -2,6 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { FileWithPath } from '@mantine/dropzone';
 import { v4 as uuidV4 } from 'uuid';
 import { backendApi } from '@/data/backendApi';
+import { fileDisplayNameUpdated } from '@/data/fileManagement/fileDisplayNameUpdated';
 
 export interface UploaderState {
   files: FileToUpload[];
@@ -39,13 +40,6 @@ export const uploaderSlice = createSlice({
         },
       }),
     },
-    changeDisplayName: (state, action: PayloadAction<{ id: string; newName: string }>) => {
-      for (const file of state.files) {
-        if (file.clientId === action.payload.id) {
-          file.displayName = action.payload.newName;
-        }
-      }
-    },
     setUploadProgress: (state, action: PayloadAction<{ id: string; progress?: number }>) => {
       for (const file of state.files) {
         if (file.clientId === action.payload.id) {
@@ -57,12 +51,18 @@ export const uploaderSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(backendApi.endpoints.createFile.matchFulfilled, (state, action) => {
       const file = state.files.find(
-          (f) => f.clientId === action.meta.arg.originalArgs.clientFileId
+        (f) => f.clientId === action.meta.arg.originalArgs.clientFileId
       );
       if (!file) return;
 
       file.serverId = action.payload.id;
       file.uploadUrl = action.payload.uploadUrl;
+    });
+    builder.addMatcher(fileDisplayNameUpdated.match, (state, action) => {
+      const file = state.files.find(f => f.serverId === action.payload.backendFileId);
+      if (!file) return;
+
+      file.displayName = action.payload.newDisplayName;
     });
   },
   selectors: {
@@ -72,5 +72,5 @@ export const uploaderSlice = createSlice({
   },
 });
 
-export const { addFile, changeDisplayName, setUploadProgress } = uploaderSlice.actions;
+export const { addFile, setUploadProgress } = uploaderSlice.actions;
 export const { selectUploadingFiles, selectFileByClientId } = uploaderSlice.selectors;
