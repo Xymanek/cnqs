@@ -1,4 +1,4 @@
-﻿import { ActionIcon, Flex, Progress, Stack, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Flex, Progress, Stack, Text, Tooltip } from '@mantine/core';
 import React from 'react';
 import { IconRefresh } from '@tabler/icons-react';
 import { FileToUpload } from '@/data/uploader/uploaderSlice';

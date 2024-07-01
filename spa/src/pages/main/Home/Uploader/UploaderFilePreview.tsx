@@ -1,4 +1,4 @@
-﻿import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import React, { useEffect, useState } from 'react';
 import { IconFileFilled } from '@tabler/icons-react';
 import { Image, rem } from '@mantine/core';

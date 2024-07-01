@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ActionIcon, Button, Flex, rem, Space, Text, TextInput } from '@mantine/core';
 import { IconCheck, IconPencil, IconX } from '@tabler/icons-react';
 import { AccessibleTooltip } from '@/components/AccessibleTooltip/AccessibleTooltip';
