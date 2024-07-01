@@ -1,6 +1,7 @@
 ﻿namespace CnqsWebBackend.Features.Files;
 
 [RegisterSingleton]
+[Obsolete("Was temp for testing, replaced by DB + S3/minio")]
 public class DummyFileService
 {
     private readonly string _storageDirectory = Path.Combine(Environment.CurrentDirectory, "UploadedFiles");

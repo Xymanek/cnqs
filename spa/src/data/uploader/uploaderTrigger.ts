@@ -21,21 +21,7 @@ export const uploaderTriggerMiddleware = createListenerMiddleware();
 uploaderTriggerMiddleware.startListening({
   actionCreator: uploaderSlice.actions.addFile,
   effect: (action, api) => {
-    api.dispatch(
-        initiateCreateFile(action.payload.clientId)
-        
-      // backendApi.endpoints.createFile.initiate(
-      //   {
-      //     clientFileId: action.payload.clientId,
-      //     contentType: action.payload.file.type,
-      //     fileNameWithExtension: action.payload.file.name,
-      //     displayName: action.payload.displayName,
-      //   },
-      //   {
-      //     fixedCacheKey: getCreateMutationKey(action.payload),
-      //   }
-      // )
-    );
+    api.dispatch(initiateCreateFile(action.payload.clientId));
   },
 });
 
