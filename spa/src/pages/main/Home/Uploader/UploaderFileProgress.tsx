@@ -1,9 +1,14 @@
 ﻿import { ActionIcon, Flex, Progress, Stack, Text, Tooltip } from '@mantine/core';
 import React from 'react';
+import { IconRefresh } from '@tabler/icons-react';
 import { FileToUpload } from '@/data/uploader/uploaderSlice';
 import { useCreateFileMutation, useUploadFileContentMutation } from '@/data/backendApi';
-import { getCreateMutationKey, getUploadContentMutationKey } from '@/data/uploader/uploaderTrigger';
-import { IconRefresh } from '@tabler/icons-react';
+import {
+  getCreateMutationKey,
+  getUploadContentMutationKey,
+  initiateCreateFile,
+} from '@/data/uploader/uploaderTrigger';
+import { useAppDispatch } from '@/data/hooks';
 
 export interface UploaderFileProgressProps {
   file: FileToUpload;
@@ -11,10 +16,12 @@ export interface UploaderFileProgressProps {
 }
 
 export function UploaderFileProgress({ file, successDisplay }: UploaderFileProgressProps) {
+  const dispatch = useAppDispatch();
+
   const [, createFileState] = useCreateFileMutation({
     fixedCacheKey: getCreateMutationKey(file),
   });
-  const [, uploadContentState] = useUploadFileContentMutation({
+  const [initiateUploadContent, uploadContentState] = useUploadFileContentMutation({
     fixedCacheKey: getUploadContentMutationKey(file.clientId),
   });
 
@@ -29,8 +36,13 @@ export function UploaderFileProgress({ file, successDisplay }: UploaderFileProgr
   }
 
   // Content upload failed
-  if (uploadContentState.isError) {
-    return <UploadFailedIndicator fileClientId={file.clientId} infoText="Upload failed" />;
+  if (uploadContentState.isError && !uploadContentState.isLoading) {
+    return (
+      <UploadFailedIndicator
+        infoText="Upload failed"
+        onRetry={() => initiateUploadContent(file.clientId)}
+      />
+    );
   }
 
   // Creating file
@@ -46,7 +58,11 @@ export function UploaderFileProgress({ file, successDisplay }: UploaderFileProgr
   // Creating file failed
   if (createFileState.isError) {
     return (
-      <UploadFailedIndicator fileClientId={file.clientId} infoText="Failed to initialize upload" />
+      <UploadFailedIndicator
+        infoText="Failed to initialize upload"
+        // TODO: there should be only a single unified place calling initiate
+        onRetry={() => dispatch(initiateCreateFile(file.clientId))}
+      />
     );
   }
 
@@ -64,18 +80,18 @@ export function UploaderFileProgress({ file, successDisplay }: UploaderFileProgr
 }
 
 export interface UploadFailedIndicatorProps {
-  fileClientId: string;
   infoText: string;
+  onRetry: () => void;
 }
 
-function UploadFailedIndicator({ /*fileClientId,*/ infoText }: UploadFailedIndicatorProps) {
+function UploadFailedIndicator({ infoText, onRetry }: UploadFailedIndicatorProps) {
   return (
     <Stack>
       <Progress size="lg" value={100} color="red" />
       <Flex gap="xs">
         <Text>{infoText}</Text>
         <Tooltip label="Retry">
-          <ActionIcon variant="filled" aria-label="Retry">
+          <ActionIcon variant="filled" aria-label="Retry" onClick={onRetry}>
             <IconRefresh
               style={{
                 width: '70%',
