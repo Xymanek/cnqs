@@ -14,6 +14,7 @@ export type FileToUpload = {
 
   serverId?: string;
   uploadUrl?: string;
+  finalizationTicket?: string;
 
   displayName: string;
 
@@ -57,6 +58,7 @@ export const uploaderSlice = createSlice({
 
       file.serverId = action.payload.id;
       file.uploadUrl = action.payload.uploadUrl;
+      file.finalizationTicket = action.payload.finalizationTicket;
     });
     builder.addMatcher(fileDisplayNameUpdated.match, (state, action) => {
       const file = state.files.find(f => f.serverId === action.payload.backendFileId);

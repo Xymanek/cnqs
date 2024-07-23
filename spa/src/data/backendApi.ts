@@ -69,6 +69,15 @@ export const backendApi = createApi({
         api.dispatch(fileDisplayNameUpdated(payload));
       },
     }),
+    finalizeFileCreation: builder.mutation<void, { backendFileId: string; ticket: string }>({
+      query: (req) => ({
+        url: `/api/files/${req.backendFileId}/finalize-creation`,
+        method: 'POST',
+        body: {
+          finalizationTicket: req.ticket,
+        } satisfies BEAS['FinalizeCreationRequest'],
+      }),
+    }),
   }),
 });
 
@@ -77,4 +86,5 @@ export const {
   useCreateFileMutation,
   useUploadFileContentMutation,
   useChangeFileNameMutation,
+  useFinalizeFileCreationMutation,
 } = backendApi;

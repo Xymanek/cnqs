@@ -15,6 +15,9 @@ export interface paths {
     get: operations["ListFilesEndpoint"];
     post: operations["CreateFileEndpoint"];
   };
+  "/api/files/{FileId}/finalize-creation": {
+    post: operations["FinalizeCreationEndpoint"];
+  };
   "/l/{fileId}": {
     get: operations["DownloadFileEndpoint"];
   };
@@ -61,6 +64,9 @@ export interface components {
       fileName?: string;
       shareLink?: string;
     };
+    FinalizeCreationRequest: {
+      finalizationTicket?: string;
+    };
     DownloadFileRequest: Record<string, never>;
     CreateFileResponse: {
       /** Format: guid */
@@ -68,6 +74,7 @@ export interface components {
       uploadUrl?: string;
       /** Format: date-time */
       uploadUrlExpires?: string;
+      finalizationTicket?: string;
     };
     CreateFileRequest: {
       /** Format: guid */
@@ -155,6 +162,28 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["CreateFileResponse"];
         };
+      };
+    };
+  };
+  FinalizeCreationEndpoint: {
+    parameters: {
+      path: {
+        fileId: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["FinalizeCreationRequest"];
+      };
+    };
+    responses: {
+      /** @description No Content */
+      204: {
+        content: never;
+      };
+      /** @description Not Found */
+      404: {
+        content: never;
       };
     };
   };

@@ -11,6 +11,10 @@ export function getUploadContentMutationKey(clientId: string): string {
   return `upload-content-${clientId}`;
 }
 
+export function getFinalizeCreationMutationKey(clientId: string): string {
+  return `finalize-creation-${clientId}`;
+}
+
 /**
  * Payload is `fileClientId`
  */
@@ -56,6 +60,31 @@ uploaderTriggerMiddleware.startListening({
       backendApi.endpoints.uploadFileContent.initiate(clientId, {
         fixedCacheKey: getUploadContentMutationKey(clientId),
       })
+    );
+  },
+});
+
+uploaderTriggerMiddleware.startListening({
+  matcher: backendApi.endpoints.uploadFileContent.matchFulfilled,
+  effect: (action, api) => {
+    const clientId = action.meta.arg.originalArgs;
+
+    const fileToUpload = selectFileByClientId(api.getState() as RootState, clientId);
+    if (!fileToUpload) throw new Error('Failed to find file to upload');
+
+    if (!fileToUpload.serverId) throw new Error('Missing backend file ID');
+    if (!fileToUpload.finalizationTicket) throw new Error('Missing finalization ticket');
+
+    api.dispatch(
+      backendApi.endpoints.finalizeFileCreation.initiate(
+        {
+          backendFileId: fileToUpload.serverId,
+          ticket: fileToUpload.finalizationTicket,
+        },
+        {
+          fixedCacheKey: getFinalizeCreationMutationKey(clientId),
+        }
+      )
     );
   },
 });

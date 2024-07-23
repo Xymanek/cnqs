@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     );
 });
 
+builder.Services.AddDataProtection();
 builder.Services.AddCnqsFileStorage();
 
 builder.Services

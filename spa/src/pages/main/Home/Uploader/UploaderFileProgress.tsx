@@ -2,9 +2,14 @@ import { ActionIcon, Flex, Progress, Stack, Text, Tooltip } from '@mantine/core'
 import React from 'react';
 import { IconRefresh } from '@tabler/icons-react';
 import { FileToUpload } from '@/data/uploader/uploaderSlice';
-import { useCreateFileMutation, useUploadFileContentMutation } from '@/data/backendApi';
+import {
+  useCreateFileMutation,
+  useFinalizeFileCreationMutation,
+  useUploadFileContentMutation,
+} from '@/data/backendApi';
 import {
   getCreateMutationKey,
+  getFinalizeCreationMutationKey,
   getUploadContentMutationKey,
   initiateCreateFile,
 } from '@/data/uploader/uploaderTrigger';
@@ -24,14 +29,30 @@ export function UploaderFileProgress({ file, successDisplay }: UploaderFileProgr
   const [initiateUploadContent, uploadContentState] = useUploadFileContentMutation({
     fixedCacheKey: getUploadContentMutationKey(file.clientId),
   });
+  const [initiateFinalizeCreation, finalizeCreationState] = useFinalizeFileCreationMutation({
+    fixedCacheKey: getFinalizeCreationMutationKey(file.clientId),
+  });
 
-  // Content upload complete
-  if (uploadContentState.isSuccess) {
+  // Finalize creation complete
+  if (finalizeCreationState.isSuccess) {
     return (
       <Stack>
         <Progress size="lg" value={100} color="green" />
         {successDisplay}
       </Stack>
+    );
+  }
+
+  // Finalize creation failed
+  if (finalizeCreationState.isError && !finalizeCreationState.isLoading) {
+    return (
+      <UploadFailedIndicator
+        infoText="Failed to finalize upload"
+        onRetry={() => initiateFinalizeCreation({
+          backendFileId: file.serverId!,
+          ticket: file.finalizationTicket!,
+        })}
+      />
     );
   }
 
@@ -42,6 +63,16 @@ export function UploaderFileProgress({ file, successDisplay }: UploaderFileProgr
         infoText="Upload failed"
         onRetry={() => initiateUploadContent(file.clientId)}
       />
+    );
+  }
+
+  // Finalizing upload
+  if (finalizeCreationState.isLoading) {
+    return (
+      <Stack>
+        <Progress size="lg" value={100} animated />
+        <Text>Finalizing...</Text>
+      </Stack>
     );
   }
 

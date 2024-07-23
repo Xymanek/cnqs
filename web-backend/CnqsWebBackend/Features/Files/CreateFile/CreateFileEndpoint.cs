@@ -21,6 +21,7 @@ public class CreateFileEndpoint : Endpoint<CreateFileRequest, CreateFileResponse
         AllowAnonymous();
     }
 
+    public required IFinalizationTicketProtector FinalizationTicketProtector { private get; init; }
     public required IOptions<FileStorageOptions> StorageOptions { private get; init; }
     public required IFileObjectKeyGenerator KeyGenerator { private get; init; }
     public required ApplicationDbContext DbContext { private get; init; }
@@ -82,6 +83,7 @@ public class CreateFileEndpoint : Endpoint<CreateFileRequest, CreateFileResponse
             Id = fileEntity.Id,
             UploadUrl = uploadUrl,
             UploadUrlExpires = uploadUrlExpires,
+            FinalizationTicket = FinalizationTicketProtector.ProtectForFileId(fileEntity.Id),
         };
     }
 }

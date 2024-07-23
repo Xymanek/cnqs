@@ -14,6 +14,9 @@ public class CreateFileRequest
 public class CreateFileResponse
 {
     public required Guid Id { get; set; }
+
     public required string UploadUrl { get; set; }
     public required DateTimeOffset UploadUrlExpires { get; set; }
+
+    public required string FinalizationTicket { get; set; }
 }
