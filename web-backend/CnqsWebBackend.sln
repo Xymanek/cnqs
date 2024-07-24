@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\docker-compose.yaml = ..\docker-compose.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnqsWebBackend.Tests", "CnqsWebBackend.Tests\CnqsWebBackend.Tests.csproj", "{0DE0FB59-B897-4AAF-AD4C-5D4321073371}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,5 +19,9 @@ Global
 		{2FFDD529-2964-42DF-B5E2-55770490F7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FFDD529-2964-42DF-B5E2-55770490F7F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FFDD529-2964-42DF-B5E2-55770490F7F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

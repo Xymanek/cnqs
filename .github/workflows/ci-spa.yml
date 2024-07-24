@@ -1,10 +1,21 @@
-name: SPA CI
+name: CI (SPA)
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'spa/**'
       - '.github/workflows/spa.yml'
+  pull_request:
+    paths:
+      - 'spa/**'
+      - '.github/workflows/spa.yml'
+
+# https://stackoverflow.com/a/72408109/2588539
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # This doesn't need to run in a matrix

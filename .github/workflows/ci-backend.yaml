@@ -1,0 +1,42 @@
+﻿name: CI (backend)
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'web-backend/**'
+      - '.github/workflows/ci-backend.yaml'
+  pull_request:
+    paths:
+      - 'web-backend/**'
+      - '.github/workflows/ci-backend.yaml'
+
+# https://stackoverflow.com/a/72408109/2588539
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0'
+          cache: true
+          cache-dependency-path: 'web-backend/*/packages.lock.json'
+
+      - name: Restore dependencies
+        run: dotnet restore --locked-mode
+        working-directory: web-backend
+      - name: Build
+        run: dotnet build --no-restore
+        working-directory: web-backend
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
+        working-directory: web-backend

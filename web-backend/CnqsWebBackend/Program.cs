@@ -2,6 +2,7 @@ using CnqsWebBackend.Data;
 using CnqsWebBackend.DiExtensions;
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 
@@ -54,3 +55,6 @@ app
     .UseSwaggerGen();
 
 app.Run();
+
+[UsedImplicitly]
+public partial class Program;
