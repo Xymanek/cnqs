@@ -35,6 +35,7 @@ function UploaderFileNameManager({ file }: UploaderFileEntryProps) {
 
   function handleNewUserFileName(newName: string): void {
     if (!file.serverId) {
+      // eslint-disable-next-line no-console
       console.error('Rename applied without server ID: ', file);
       return;
     }
