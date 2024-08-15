@@ -54,6 +54,6 @@ public class FileUploadTests(CnqsBackendApp App) : TestBase<CnqsBackendApp>
             }
         );
 
-        finalizeRsp.StatusCode.Should().Be(HttpStatusCode.OK);
+        finalizeRsp.StatusCode.Should().Be(HttpStatusCode.NoContent);
     }
 }

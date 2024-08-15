@@ -17,7 +17,7 @@ public class FinalizeCreationEndpoint : Endpoint<FinalizeCreationRequest, Result
 {
     public override void Configure()
     {
-        Post("/api/files/{FileId}/finalize-creation");
+        Post("/api/files/{fileId}/finalize-creation");
         AllowAnonymous();
     }
 
@@ -27,9 +27,11 @@ public class FinalizeCreationEndpoint : Endpoint<FinalizeCreationRequest, Result
     public required ApplicationDbContext DbContext { private get; init; }
     public required IAmazonS3 S3 { private get; init; }
 
-    public override async Task HandleAsync(FinalizeCreationRequest request, CancellationToken ct)
+    public override async Task<Results<NoContent, NotFound>> ExecuteAsync(
+        FinalizeCreationRequest request, CancellationToken ct
+    )
     {
-        Guid fileId = Route<Guid>("FileId");
+        Guid fileId = Route<Guid>("fileId");
 
         Guid unprotectedTicket;
         try
@@ -40,14 +42,14 @@ public class FinalizeCreationEndpoint : Endpoint<FinalizeCreationRequest, Result
         {
             Logger.LogTrace(e, "UnprotectTicket failed");
             ThrowError("Invalid ticket");
-            return;
+            throw new Exception("Unreachable");
         }
 
         if (unprotectedTicket != fileId)
         {
             Logger.LogTrace("Ticket value does not match file id");
             ThrowError("Invalid ticket");
-            return;
+            throw new Exception("Unreachable");
         }
 
         FileEntity? fileEntity = await DbContext.Files
@@ -55,8 +57,7 @@ public class FinalizeCreationEndpoint : Endpoint<FinalizeCreationRequest, Result
 
         if (fileEntity == null)
         {
-            Response = TypedResults.NotFound();
-            return;
+            return TypedResults.NotFound();
         }
 
         try
@@ -70,12 +71,12 @@ public class FinalizeCreationEndpoint : Endpoint<FinalizeCreationRequest, Result
         catch (AmazonS3Exception e) when (e.StatusCode == HttpStatusCode.NotFound)
         {
             ThrowError("File is not uploaded");
-            return;
+            throw new Exception("Unreachable");
         }
 
         fileEntity.StoreStatus = FileStoreStatus.Completed;
         await DbContext.SaveChangesAsync(ct);
 
-        Response = TypedResults.NoContent();
+        return TypedResults.NoContent();
     }
 }
