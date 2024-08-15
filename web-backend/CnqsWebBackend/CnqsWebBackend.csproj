@@ -7,6 +7,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>e6080fda-702d-40e5-b5f7-ad1b3b18a40a</UserSecretsId>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     </PropertyGroup>
 
     <ItemGroup>

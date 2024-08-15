@@ -1,3 +1,4 @@
+using CnqsWebBackend;
 using CnqsWebBackend.Data;
 using CnqsWebBackend.DiExtensions;
 using FastEndpoints;
@@ -51,7 +52,11 @@ WebApplication app = builder.Build();
 app.UseCors();
 
 app
-    .UseFastEndpoints(c => { c.Endpoints.ShortNames = true; })
+    .UseFastEndpoints(c =>
+    {
+        c.Endpoints.ShortNames = true;
+        c.Serializer.Options.TypeInfoResolverChain.Add(StjHttpApiContext.Default);
+    })
     .UseSwaggerGen();
 
 app.Run();
