@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
-using Respawn;
-using Testcontainers.Minio;
-using Testcontainers.PostgreSql;
+// using Respawn;
+// using Testcontainers.Minio;
+// using Testcontainers.PostgreSql;
 
 namespace CnqsWebBackend.Tests;
 
@@ -18,20 +18,20 @@ namespace CnqsWebBackend.Tests;
 [DisableWafCache] // I need to find a better way to do db migrations while keeping the WAF cache
 public class CnqsBackendApp : AppFixture<Program>
 {
-    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
-        .Build();
-    
-    private readonly MinioContainer _minio = new MinioBuilder()
-        .Build();
+    // private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
+    //     .Build();
+    //
+    // private readonly MinioContainer _minio = new MinioBuilder()
+    //     .Build();
 
     private const string BucketName = "cnqs";
 
-    protected override async Task PreSetupAsync()
-    {
-        await _postgres.StartAsync();
-        await _minio.StartAsync();
-    }
-
+    // protected override async Task PreSetupAsync()
+    // {
+    //     await _postgres.StartAsync();
+    //     await _minio.StartAsync();
+    // }
+    //
     protected override void ConfigureApp(IWebHostBuilder a)
     {
         a.ConfigureAppConfiguration(config =>
@@ -43,28 +43,29 @@ public class CnqsBackendApp : AppFixture<Program>
             });
         });
     }
-
+    
     private IEnumerable<(string, string?)> GetAppConfiguration()
     {
-        yield return ("ConnectionStrings:Default", _postgres.GetConnectionString());
+        // yield return ("ConnectionStrings:Default", _postgres.GetConnectionString());
         
-        yield return ("App:FileStorage:Endpoint", _minio.GetConnectionString());
-        yield return ("App:FileStorage:PublicEndpoint", _minio.GetConnectionString());
-        yield return ("App:FileStorage:InternalEndpoint", _minio.GetConnectionString());
+        // yield return ("App:FileStorage:Endpoint", _minio.GetConnectionString());
+        // yield return ("App:FileStorage:PublicEndpoint", _minio.GetConnectionString());
+        // yield return ("App:FileStorage:InternalEndpoint", _minio.GetConnectionString());
         yield return ("App:FileStorage:ForcePathStyle", true.ToString());
-        yield return ("App:FileStorage:AccessKey", _minio.GetAccessKey());
-        yield return ("App:FileStorage:SecretKey", _minio.GetSecretKey());
+        // yield return ("App:FileStorage:AccessKey", _minio.GetAccessKey());
+        // yield return ("App:FileStorage:SecretKey", _minio.GetSecretKey());
+        yield return ("App:FileStorage:Endpoint", "http://localhost:12345");
         yield return ("App:FileStorage:Bucket", BucketName);
     }
 
-    private Respawner? _respawner;
+    // private Respawner? _respawner;
 
     protected override async Task SetupAsync()
     {
-        await MigrateDb();
-        await SetupRespawner();
+        // await MigrateDb();
+        // await SetupRespawner();
         
-        await CreateBucketAsync();
+        // await CreateBucketAsync();
     }
 
     private async Task CreateBucketAsync()
@@ -73,18 +74,18 @@ public class CnqsBackendApp : AppFixture<Program>
         await s3.PutBucketAsync(BucketName);
     }
 
-    private async Task SetupRespawner()
-    {
-        await using DbConnection connection = await GetOpenDbConnection();
-        _respawner = await Respawner.CreateAsync(connection, new RespawnerOptions
-        {
-            DbAdapter = DbAdapter.Postgres,
-            SchemasToInclude =
-            [
-                "public"
-            ],
-        });
-    }
+    // private async Task SetupRespawner()
+    // {
+    //     await using DbConnection connection = await GetOpenDbConnection();
+    //     _respawner = await Respawner.CreateAsync(connection, new RespawnerOptions
+    //     {
+    //         DbAdapter = DbAdapter.Postgres,
+    //         SchemasToInclude =
+    //         [
+    //             "public"
+    //         ],
+    //     });
+    // }
 
     private async Task MigrateDb()
     {
@@ -94,23 +95,23 @@ public class CnqsBackendApp : AppFixture<Program>
         await dbContext.Database.MigrateAsync();
     }
 
-    protected override async Task TearDownAsync()
-    {
-        await _postgres.StopAsync();
-        await _minio.StopAsync();
-    }
+    // protected override async Task TearDownAsync()
+    // {
+    //     await _postgres.StopAsync();
+    //     await _minio.StopAsync();
+    // }
 
     public async Task ResetDb()
     {
-        await using DbConnection connection = await GetOpenDbConnection();
-        await _respawner!.ResetAsync(connection);
+        // await using DbConnection connection = await GetOpenDbConnection();
+        // await _respawner!.ResetAsync(connection);
     }
 
-    private async Task<DbConnection> GetOpenDbConnection()
-    {
-        NpgsqlConnection connection = new(_postgres.GetConnectionString());
-        await connection.OpenAsync();
-        
-        return connection;
-    }
+    // private async Task<DbConnection> GetOpenDbConnection()
+    // {
+    //     NpgsqlConnection connection = new(_postgres.GetConnectionString());
+    //     await connection.OpenAsync();
+    //     
+    //     return connection;
+    // }
 }
