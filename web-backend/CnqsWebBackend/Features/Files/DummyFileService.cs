@@ -17,23 +17,23 @@ public class DummyFileService
         await content.CopyToAsync(fs, ct);
     }
 
-    public ValueTask<(Guid Id, string Name)[]> GetStoredFiles(CancellationToken ct = default)
-    {
-        return ValueTask.FromResult(GatherFiles().ToArray());
-    }
+    // public ValueTask<(Guid Id, string Name)[]> GetStoredFiles(CancellationToken ct = default)
+    // {
+    //     return ValueTask.FromResult(GatherFiles().ToArray());
+    // }
 
-    private IEnumerable<(Guid Id, string Name)> GatherFiles()
-    {
-        foreach (string directoryPath in Directory.EnumerateDirectories(_storageDirectory))
-        {
-            string directoryName = Path.GetFileName(directoryPath);
-            Guid guid = Guid.Parse(directoryName);
-
-            string filePath = Directory.EnumerateFiles(directoryPath).Single();
-
-            yield return (guid, Path.GetFileName(filePath));
-        }
-    }
+    // private IEnumerable<(Guid Id, string Name)> GatherFiles()
+    // {
+    //     foreach (string directoryPath in Directory.EnumerateDirectories(_storageDirectory))
+    //     {
+    //         string directoryName = Path.GetFileName(directoryPath);
+    //         Guid guid = Guid.Parse(directoryName);
+    //
+    //         string filePath = Directory.EnumerateFiles(directoryPath).Single();
+    //
+    //         yield return (guid, Path.GetFileName(filePath));
+    //     }
+    // }
 
     public FileInfo GetFileForRead(Guid fileId)
     {

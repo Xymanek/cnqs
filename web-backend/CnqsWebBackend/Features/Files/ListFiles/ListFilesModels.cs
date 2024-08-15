@@ -7,8 +7,6 @@ public class ListFilesResponse
 
 public class ListFilesFileModel
 {
+    public required Guid FileId { get; set; }
     public required string FileName { get; set; }
-    public required string ShareLink { get; set; }
 }
-
-

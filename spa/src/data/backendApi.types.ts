@@ -9,7 +9,7 @@ export interface paths {
     get: operations["ListFilesEndpoint"];
     post: operations["CreateFileEndpoint"];
   };
-  "/l/{fileId}": {
+  "/api/files/{fileId}/content": {
     get: operations["DownloadFileEndpoint"];
   };
   "/api/files/{fileId}/finalize-creation": {
@@ -50,8 +50,9 @@ export interface components {
       files: components["schemas"]["ListFilesFileModel"][];
     };
     ListFilesFileModel: {
+      /** Format: guid */
+      fileId: string;
       fileName: string;
-      shareLink: string;
     };
     UpdateDisplayNameRequest: {
       newDisplayName: string;
@@ -129,12 +130,9 @@ export interface operations {
       };
     };
     responses: {
-      /** @description Success */
-      200: {
-        content: {
-          "text/plain": unknown;
-          "application/json": unknown;
-        };
+      /** @description Not Found */
+      404: {
+        content: never;
       };
     };
   };

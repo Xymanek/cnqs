@@ -78,6 +78,13 @@ export const backendApi = createApi({
         } satisfies BEAS['FinalizeCreationRequest'],
       }),
     }),
+    downloadFile: builder.query<Blob, string>({
+      query: (req) => ({
+        url: `/api/files/${req}/content`,
+        method: 'GET',
+        redirect: 'follow',
+      }),
+    }),
   }),
 });
 
@@ -87,4 +94,5 @@ export const {
   useUploadFileContentMutation,
   useChangeFileNameMutation,
   useFinalizeFileCreationMutation,
+  useDownloadFileQuery,
 } = backendApi;

@@ -30,7 +30,7 @@ function RecentFilesContent() {
   return (
     <Stack>
       {data.files!.map((file, i) => (
-        <RecentFile fileName={file.fileName} viewUrl={file.shareLink} key={i} />
+        <RecentFile displayName={file.fileName} backendId={file.fileId} key={i} />
       ))}
     </Stack>
   );

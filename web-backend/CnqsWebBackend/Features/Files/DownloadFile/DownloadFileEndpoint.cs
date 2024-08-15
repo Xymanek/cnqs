@@ -1,26 +1,56 @@
-﻿using FastEndpoints;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.StaticFiles;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using CnqsWebBackend.Data;
+using CnqsWebBackend.Features.Files.Data;
+using CnqsWebBackend.Features.Files.Infra;
+using FastEndpoints;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using NodaTime;
 
 namespace CnqsWebBackend.Features.Files.DownloadFile;
 
-public class DownloadFileEndpoint : Endpoint<DownloadFileRequest>
+public class DownloadFileEndpoint : Endpoint<DownloadFileRequest, Results<NotFound, RedirectHttpResult>>
 {
-    public required DummyFileService FileService { private get; [UsedImplicitly] init; }
-    private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
+    public required IOptions<FileStorageOptions> StorageOptions { private get; init; }
+    public required IFileObjectKeyGenerator KeyGenerator { private get; init; }
+    public required ApplicationDbContext DbContext { private get; init; }
+    public required IAmazonS3 S3 { private get; init; }
+    public required IClock Clock { private get; init; }
 
     public override void Configure()
     {
-        Get("/l/{FileId}");
+        Get("/api/files/{fileId}/content");
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(DownloadFileRequest req, CancellationToken ct)
+    public override async Task<Results<NotFound, RedirectHttpResult>> ExecuteAsync(
+        DownloadFileRequest req, CancellationToken ct
+    )
     {
-        FileInfo fileInfo = FileService.GetFileForRead(req.FileId);
-        ContentTypeProvider.TryGetContentType(fileInfo.Name, out string? contentType);
+        FileEntity? file = await DbContext.Files
+            .Where(file => file.Id == req.FileId)
+            .SingleOrDefaultAsync(ct);
+        
+        if (file == null)
+        {
+            return TypedResults.NotFound();
+        }
 
-        // await SendFileAsync(fileInfo, contentType: contentType ?? "application/octet-stream", cancellation: ct);
-        await SendStreamAsync(fileInfo.OpenRead(), contentType: contentType ?? "application/octet-stream", cancellation: ct);
+        DateTimeOffset urlExpires = Clock.GetCurrentInstant()
+            .Plus(Duration.FromMinutes(15))
+            .ToDateTimeOffset();
+
+        string downloadUrl = await S3.GetPreSignedURLAsync(new GetPreSignedUrlRequest
+        {
+            BucketName = StorageOptions.Value.Bucket,
+            Key = KeyGenerator.GetRawFileKey(file.Id, file.FileNameWithExtension),
+            Verb = HttpVerb.GET,
+            Expires = urlExpires.UtcDateTime,
+            Protocol = S3.Config.UseHttp ? Protocol.HTTP : Protocol.HTTPS,
+        });
+
+        return TypedResults.Redirect(downloadUrl);
     }
 }
