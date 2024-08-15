@@ -25,7 +25,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup .NET
-        id: setup-dotnet
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0'
@@ -39,13 +38,6 @@ jobs:
         run: dotnet build --no-restore
         working-directory: web-backend
 
-      - name: Run ReSharper inspections
-        uses: muno92/resharper_inspectcode@v1
-        with:
-          failOnIssue: '0'
-          solutionPath: ./web-backend/CnqsWebBackend.sln
-          dotnetVersion: ${{ steps.setup-dotnet.outputs.dotnet-version }}
-
-      - name: Run tests
+      - name: Test
         run: dotnet test --no-build --verbosity normal
         working-directory: web-backend
