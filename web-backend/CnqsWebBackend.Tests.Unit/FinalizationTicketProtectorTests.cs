@@ -41,10 +41,10 @@ public class FinalizationTicketProtectorTests
     {
         Guid fileId = new("92AB8C40-ED89-472D-9786-C71F837E2513");
         byte[] fileIdBytes = fileId.ToByteArray();
-        
+
         byte[] protectedBytes = [0x00, 0x01, 0x02, 0x03];
         string protectedString = Base64UrlTextEncoder.Encode(protectedBytes);
-        
+
         A.CallTo(() => _dataProtector.Unprotect(A<byte[]>.That.IsSameSequenceAs(protectedBytes)))
             .Returns(fileIdBytes);
 
@@ -69,7 +69,7 @@ public class FinalizationTicketProtectorTests
 
         A.CallTo(() => _dataProtector.Unprotect(A<byte[]>.That.IsSameSequenceAs(protectedBytes)))
             .Throws(() => new CryptographicException());
-        
+
         Action act = () => _finalizationProtector.UnprotectTicket(protectedString);
         act.Should().Throw<ConfirmationTicketUnprotectionFailedException>()
             .WithMessage("Failed to unprotect the ticket")
@@ -80,13 +80,13 @@ public class FinalizationTicketProtectorTests
     public void UnprotectTicket_BadTicketValue()
     {
         byte[] fileIdBytes = [0x00, 0x01, 0x02, 0x03, 0x04];
-        
+
         byte[] protectedBytes = [0x00, 0x01, 0x02, 0x03];
         string protectedString = Base64UrlTextEncoder.Encode(protectedBytes);
-        
+
         A.CallTo(() => _dataProtector.Unprotect(A<byte[]>.That.IsSameSequenceAs(protectedBytes)))
             .Returns(fileIdBytes);
-        
+
         Action act = () => _finalizationProtector.UnprotectTicket(protectedString);
         act.Should().Throw<ConfirmationTicketUnprotectionFailedException>()
             .WithMessage("Ticket value is malformed")

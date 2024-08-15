@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 	ProjectSection(SolutionItems) = preProject
 		..\docker-compose.yaml = ..\docker-compose.yaml
 		Directory.Packages.props = Directory.Packages.props
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnqsWebBackend.Tests.Integration", "CnqsWebBackend.Tests.Integration\CnqsWebBackend.Tests.Integration.csproj", "{0DE0FB59-B897-4AAF-AD4C-5D4321073371}"
