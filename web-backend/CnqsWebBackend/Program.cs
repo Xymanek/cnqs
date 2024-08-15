@@ -35,7 +35,11 @@ builder.Services
         o.AutoTagPathSegmentIndex = 2;
         o.ShortSchemaNames = true;
 
-        o.DocumentSettings = s => { s.Title = "CloudNativeQuickShare API"; };
+        o.DocumentSettings = s =>
+        {
+            s.Title = "CloudNativeQuickShare API";
+            s.MarkNonNullablePropsAsRequired();
+        };
     });
 
 builder.Services.AddSingleton<IClock>(SystemClock.Instance);

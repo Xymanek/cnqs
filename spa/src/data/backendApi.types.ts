@@ -5,21 +5,21 @@
 
 
 export interface paths {
-  "/api/upload": {
-    post: operations["UploadFileEndpoint"];
-  };
-  "/api/files/{FileId}/display-name": {
-    put: operations["UpdateDisplayNameEndpoint"];
-  };
   "/api/files": {
     get: operations["ListFilesEndpoint"];
     post: operations["CreateFileEndpoint"];
   };
-  "/api/files/{FileId}/finalize-creation": {
-    post: operations["FinalizeCreationEndpoint"];
-  };
   "/l/{fileId}": {
     get: operations["DownloadFileEndpoint"];
+  };
+  "/api/files/{fileId}/finalize-creation": {
+    post: operations["FinalizeCreationEndpoint"];
+  };
+  "/api/files/{FileId}/display-name": {
+    put: operations["UpdateDisplayNameEndpoint"];
+  };
+  "/api/upload": {
+    post: operations["UploadFileEndpoint"];
   };
 }
 
@@ -27,8 +27,37 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    CreateFileResponse: {
+      /** Format: guid */
+      id: string;
+      uploadUrl: string;
+      /** Format: date-time */
+      uploadUrlExpires: string;
+      finalizationTicket: string;
+    };
+    CreateFileRequest: {
+      /** Format: guid */
+      clientFileId: string;
+      contentType: string;
+      fileNameWithExtension: string;
+      displayName: string;
+    };
+    DownloadFileRequest: Record<string, never>;
+    FinalizeCreationRequest: {
+      finalizationTicket: string;
+    };
+    ListFilesResponse: {
+      files: components["schemas"]["ListFilesFileModel"][];
+    };
+    ListFilesFileModel: {
+      fileName: string;
+      shareLink: string;
+    };
+    UpdateDisplayNameRequest: {
+      newDisplayName: string;
+    };
     UploadFileResponse: {
-      viewUrl?: string;
+      viewUrl: string;
       shareUrl?: string | null;
     };
     /** @description the dto used to send an error response to the client */
@@ -38,50 +67,21 @@ export interface components {
        * @description the http status code sent to the client. default is 400.
        * @default 400
        */
-      statusCode?: number;
+      statusCode: number;
       /**
        * @description the message for the error response
        * @default One or more errors occurred!
        */
-      message?: string;
+      message: string;
       /** @description the collection of errors for the current context */
-      errors?: {
+      errors: {
         [key: string]: string[];
       };
     };
     UploadFileRequest: {
       /** Format: binary */
-      file?: string;
+      file: string;
       autoShare?: boolean | null;
-    };
-    UpdateDisplayNameRequest: {
-      newDisplayName?: string;
-    };
-    ListFilesResponse: {
-      files?: components["schemas"]["ListFilesFileModel"][];
-    };
-    ListFilesFileModel: {
-      fileName?: string;
-      shareLink?: string;
-    };
-    FinalizeCreationRequest: {
-      finalizationTicket?: string;
-    };
-    DownloadFileRequest: Record<string, never>;
-    CreateFileResponse: {
-      /** Format: guid */
-      id?: string;
-      uploadUrl?: string;
-      /** Format: date-time */
-      uploadUrlExpires?: string;
-      finalizationTicket?: string;
-    };
-    CreateFileRequest: {
-      /** Format: guid */
-      clientFileId?: string;
-      contentType?: string;
-      fileNameWithExtension?: string;
-      displayName?: string;
     };
   };
   responses: never;
@@ -97,49 +97,6 @@ export type external = Record<string, never>;
 
 export interface operations {
 
-  UploadFileEndpoint: {
-    requestBody: {
-      content: {
-        "multipart/form-data": components["schemas"]["UploadFileRequest"];
-      };
-    };
-    responses: {
-      /** @description Success */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UploadFileResponse"];
-        };
-      };
-      /** @description Bad Request */
-      400: {
-        content: {
-          "application/problem+json": components["schemas"]["ErrorResponse"];
-        };
-      };
-    };
-  };
-  UpdateDisplayNameEndpoint: {
-    parameters: {
-      path: {
-        fileId: string;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UpdateDisplayNameRequest"];
-      };
-    };
-    responses: {
-      /** @description No Content */
-      204: {
-        content: never;
-      };
-      /** @description Not Found */
-      404: {
-        content: never;
-      };
-    };
-  };
   ListFilesEndpoint: {
     responses: {
       /** @description Success */
@@ -161,6 +118,22 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["CreateFileResponse"];
+        };
+      };
+    };
+  };
+  DownloadFileEndpoint: {
+    parameters: {
+      path: {
+        fileId: string;
+      };
+    };
+    responses: {
+      /** @description Success */
+      200: {
+        content: {
+          "text/plain": unknown;
+          "application/json": unknown;
         };
       };
     };
@@ -187,18 +160,45 @@ export interface operations {
       };
     };
   };
-  DownloadFileEndpoint: {
+  UpdateDisplayNameEndpoint: {
     parameters: {
       path: {
         fileId: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UpdateDisplayNameRequest"];
+      };
+    };
+    responses: {
+      /** @description No Content */
+      204: {
+        content: never;
+      };
+      /** @description Not Found */
+      404: {
+        content: never;
+      };
+    };
+  };
+  UploadFileEndpoint: {
+    requestBody: {
+      content: {
+        "multipart/form-data": components["schemas"]["UploadFileRequest"];
       };
     };
     responses: {
       /** @description Success */
       200: {
         content: {
-          "text/plain": unknown;
-          "application/json": unknown;
+          "application/json": components["schemas"]["UploadFileResponse"];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          "application/problem+json": components["schemas"]["ErrorResponse"];
         };
       };
     };

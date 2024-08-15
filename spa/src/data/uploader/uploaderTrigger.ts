@@ -54,7 +54,7 @@ uploaderTriggerMiddleware.startListening({
 uploaderTriggerMiddleware.startListening({
   matcher: backendApi.endpoints.createFile.matchFulfilled,
   effect: (action, api) => {
-    const clientId = action.meta.arg.originalArgs.clientFileId!; // TODO !
+    const clientId = action.meta.arg.originalArgs.clientFileId;
 
     api.dispatch(
       backendApi.endpoints.uploadFileContent.initiate(clientId, {
