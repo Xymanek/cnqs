@@ -32,4 +32,10 @@
       <ProjectReference Include="..\CnqsWebBackend\CnqsWebBackend.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Flows\Space_free.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
