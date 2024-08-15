@@ -8,7 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnqsWebBackend.Tests", "CnqsWebBackend.Tests\CnqsWebBackend.Tests.csproj", "{0DE0FB59-B897-4AAF-AD4C-5D4321073371}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnqsWebBackend.Tests.Integration", "CnqsWebBackend.Tests.Integration\CnqsWebBackend.Tests.Integration.csproj", "{0DE0FB59-B897-4AAF-AD4C-5D4321073371}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnqsWebBackend.Tests.Unit", "CnqsWebBackend.Tests.Unit\CnqsWebBackend.Tests.Unit.csproj", "{BB91D0D9-D260-42EA-B38B-598737D6322A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DE0FB59-B897-4AAF-AD4C-5D4321073371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB91D0D9-D260-42EA-B38B-598737D6322A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB91D0D9-D260-42EA-B38B-598737D6322A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB91D0D9-D260-42EA-B38B-598737D6322A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB91D0D9-D260-42EA-B38B-598737D6322A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

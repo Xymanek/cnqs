@@ -12,7 +12,7 @@ using Respawn;
 using Testcontainers.Minio;
 using Testcontainers.PostgreSql;
 
-namespace CnqsWebBackend.Tests;
+namespace CnqsWebBackend.Tests.Integration;
 
 // I need to find a better way to do db migrations while keeping the WAF cache,
 // but right now it doesn't matter anyway due to CnqsBackendAppCollection

@@ -5,7 +5,7 @@ using FastEndpoints;
 using FastEndpoints.Testing;
 using FluentAssertions;
 
-namespace CnqsWebBackend.Tests.Flows;
+namespace CnqsWebBackend.Tests.Integration.Flows;
 
 [Collection(CnqsBackendAppCollection.Name)]
 public class FileUploadTests(CnqsBackendApp App) : TestBase<CnqsBackendApp>

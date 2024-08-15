@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace CnqsWebBackend.Tests;
+namespace CnqsWebBackend.Tests.Integration;
 
 public static class TestFileUtils
 {
