@@ -30,8 +30,7 @@ public class CnqsBackendApp : AppFixture<Program>
 
     protected override async Task PreSetupAsync()
     {
-        await _postgres.StartAsync();
-        await _minio.StartAsync();
+        await Task.WhenAll(_postgres.StartAsync(), _minio.StartAsync());
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
@@ -98,8 +97,7 @@ public class CnqsBackendApp : AppFixture<Program>
 
     protected override async Task TearDownAsync()
     {
-        await _postgres.StopAsync();
-        await _minio.StopAsync();
+        await Task.WhenAll(_postgres.StopAsync(), _minio.StopAsync());
     }
 
     public async Task ResetDb()
