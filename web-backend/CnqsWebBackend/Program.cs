@@ -25,7 +25,11 @@ builder.Services.AddDataProtection();
 builder.Services.AddCnqsFileStorage();
 
 builder.Services
-    .AddFastEndpoints()
+    .AddFastEndpoints(options =>
+    {
+        options.SourceGeneratorDiscoveredTypes.AddRange(DiscoveredTypes.All);
+        options.DisableAutoDiscovery = true;
+    })
     .SwaggerDocument(o =>
     {
         o.AutoTagPathSegmentIndex = 2;

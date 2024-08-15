@@ -38,6 +38,12 @@
           "FluentValidation": "11.9.2"
         }
       },
+      "FastEndpoints.Generator": {
+        "type": "Direct",
+        "requested": "[5.28.0, )",
+        "resolved": "5.28.0",
+        "contentHash": "ZeLwangzGYrZxACKITRF008DaGtm94CXlda+f2V5Svfl0R9M6mcaD8JqWWCKQ8Bhp75jzg/Vla/uWxepu7eOTg=="
+      },
       "FastEndpoints.Swagger": {
         "type": "Direct",
         "requested": "[5.28.0, )",
