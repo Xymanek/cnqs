@@ -4,9 +4,12 @@ using CnqsWebBackend.Features.Files.FinalizeCreation;
 using FastEndpoints;
 using FastEndpoints.Testing;
 using FluentAssertions;
+using JetBrains.Annotations;
 
-namespace CnqsWebBackend.Tests.Integration.Flows;
+namespace CnqsWebBackend.Tests.Integration.MultiStepFlows;
 
+[TestSubject(typeof(CreateFileEndpoint))]
+[TestSubject(typeof(FinalizeCreationEndpoint))]
 [Collection(CnqsBackendAppCollection.Name)]
 public class FileUploadTests(CnqsBackendApp App) : TestBase<CnqsBackendApp>
 {
