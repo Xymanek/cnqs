@@ -6,6 +6,7 @@ using FluentAssertions;
 
 namespace CnqsWebBackend.Tests;
 
+[Collection(CnqsBackendAppCollection.Name)]
 public class FileUploadTests(CnqsBackendApp App) : TestBase<CnqsBackendApp>
 {
     [Fact]
@@ -34,5 +35,10 @@ public class FileUploadTests(CnqsBackendApp App) : TestBase<CnqsBackendApp>
         });
 
         rsp.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    protected override async Task TearDownAsync()
+    {
+        await App.ResetDb();
     }
 }

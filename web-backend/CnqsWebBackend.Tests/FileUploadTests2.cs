@@ -6,6 +6,7 @@ using FluentAssertions;
 
 namespace CnqsWebBackend.Tests;
 
+[Collection(CnqsBackendAppCollection.Name)]
 public class FileUploadTests2(CnqsBackendApp App) : TestBase<CnqsBackendApp>
 {
     [Fact]
